@@ -19,7 +19,10 @@ describe('basic usage', () => {
       fontSize: 12,
       color: 'red',
     };
-    styleManager = createStyleManager(createJss(preset()), themeObj);
+    styleManager = createStyleManager({
+      jss: createJss(preset()),
+      theme: themeObj,
+    });
     styleSheet = createStyleSheet('button', (theme) => ({
       root: {
         color: theme.color,

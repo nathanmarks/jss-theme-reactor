@@ -8,12 +8,13 @@ describe('styleManager.js', () => {
   let styleManager;
   let jss;
   let attach;
-  let sheetMap = [];
+  let sheetMap;
 
   before(() => {
+    sheetMap = [];
     attach = stub().returns({ classes: { base: 'base-1234' } });
     jss = { createStyleSheet: stub().returns({ attach }) };
-    styleManager = createStyleManager({ jss, sheetMap });
+    styleManager = createStyleManager({ jss, sheetMap, theme: { color: 'red' } });
   });
 
   it('should create a styleManager object', () => {
@@ -65,6 +66,23 @@ describe('styleManager.js', () => {
         warningSpy.calledWith('Warning: A styleSheet with the name foo already exists.'),
         true
       );
+    });
+  });
+
+  describe('prepareInline', () => {
+    it('should prepare inline styles', () => {
+      const styles = styleManager.prepareInline({
+        display: 'block',
+      });
+      assert.deepEqual(styles, { display: 'block' }, 'should return the same');
+    });
+
+    it('should prepare inline styles with theme variables', () => {
+      const styles = styleManager.prepareInline((theme) => ({
+        display: 'block',
+        color: theme.color,
+      }));
+      assert.deepEqual(styles, { display: 'block', color: 'red' }, 'should return themed styles');
     });
   });
 });

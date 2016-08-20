@@ -3,7 +3,7 @@
  * Core function used to create styleSheet objects
  *
  * @param  {string}   name          - Stylesheet name, should be unique
- * @param  {Function} callback      - Should return the raw rules object, is passed the theme as the first argument.
+ * @param  {Function} callback      - Should return the raw rules object
  * @param  {Object}   options       - Additional options
  * @return {Object}                 - styleSheet object
  */

@@ -1,21 +1,12 @@
 /* eslint-env mocha */
 import { assert } from 'chai';
 import {
-  kebabCase,
   transform,
   contains,
   find,
 } from './utils';
 
 describe('utils.js', () => {
-  describe('kebabCase(string)', () => {
-    it('should kebabCase strings', () => {
-      assert.strictEqual(kebabCase('Foo'), 'foo');
-      assert.strictEqual(kebabCase('MyButton'), 'my-button');
-      assert.strictEqual(kebabCase('16dp'), '16dp');
-    });
-  });
-
   describe('transform(obj, cb, accumulator)', () => {
     it('should transform an object into an array', () => {
       const obj = {

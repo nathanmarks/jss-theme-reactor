@@ -1,12 +1,4 @@
 
-const kebabRegex = /[A-Z\u00C0-\u00D6\u00D8-\u00DE]/g;
-
-export function kebabCase(str) {
-  return str.replace(kebabRegex, (match, i) => {
-    return i > 0 ? `-${match.toLowerCase()}` : match.toLowerCase();
-  });
-}
-
 export function transform(obj, cb, accumulator) {
   Object.keys(obj).forEach((key) => {
     cb(accumulator, obj[key], key);
