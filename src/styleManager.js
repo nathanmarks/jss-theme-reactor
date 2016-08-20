@@ -94,7 +94,7 @@ export function createStyleManager({ jss, theme = {}, sheetMap = [] } = {}) {
    * @param  {Object}  newTheme    - New theme object
    * @param  {boolean} shouldReset - Set to true to reset the renderer
    */
-  function updateTheme(newTheme, shouldReset) {
+  function updateTheme(newTheme, shouldReset = true) {
     styleManager.theme = newTheme;
     if (shouldReset) {
       reset();
@@ -112,6 +112,7 @@ export function createStyleManager({ jss, theme = {}, sheetMap = [] } = {}) {
       jssStyleSheet.detach();
       sheets.push([styleSheet, other]);
     });
+    jss.sheets.registry = [];
     sheetMap = [];
     sheets.forEach((n) => render(...n));
   }

@@ -39,8 +39,7 @@ export function createThemeProvider(defaultTheme = {}) {
     componentWillUpdate(nextProps) {
       if (this.theme && nextProps.theme && nextProps.theme !== this.theme) {
         this.theme = nextProps.theme;
-        this.styleManager.replaceTheme(nextProps.theme);
-        this.styleManager.empty();
+        this.styleManager.updateTheme(nextProps.theme);
       }
     }
 
