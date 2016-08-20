@@ -66,7 +66,6 @@ function createPackageFile() {
       repository,
       license,
       bugs,
-      homepage,
       peerDependencies,
       dependencies,
     };
