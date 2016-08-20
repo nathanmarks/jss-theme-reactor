@@ -1,0 +1,17 @@
+instrumentation:
+  root: packages
+  extensions:
+    - .js
+  default-excludes: true
+  excludes:
+    - "**/*.spec.js"
+    - "**/lib/**"
+  variable: __coverage__
+  es-modules: true
+  include-all-sources: true
+reporting:
+  print: summary
+  reports:
+    - lcov
+  dir: ./test/coverage
+

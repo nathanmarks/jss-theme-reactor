@@ -1,0 +1,9 @@
+dist
+node_modules
+npm-debug.log
+build
+lib
+coverage
+
+# OS files
+.DS_STORE
