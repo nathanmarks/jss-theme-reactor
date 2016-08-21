@@ -1,6 +1,6 @@
 import warning from 'warning';
 import prefixAll from 'inline-style-prefixer/static';
-import { find } from './utils';
+import { find, findIndex } from './utils';
 
 /**
  * styleManager module. Used to create styleManager objects.
@@ -67,18 +67,14 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     if (!mapping) {
       const { name, resolveStyles, options } = styleSheet;
 
-      if (process.env.NODE_ENV !== 'production') {
-        // hmr support
-        const looseMapping = find(sheetMap, { name });
+      const looseIndex = findIndex(sheetMap, { name });
 
-        if (looseMapping) {
-          // console.log(looseMapping.styleSheet); // eslint-disable-line no-console
+      if (looseIndex !== -1) {
+        sheetMap[looseIndex].jssStyleSheet.detach();
+        sheetMap.splice(looseIndex, 1);
+        if (process.env.NODE_ENV !== 'production') {
+          warning(false, `A styleSheet with the name ${name} already exists.`);
         }
-
-        warning(
-          !looseMapping,
-          `A styleSheet with the name ${name} already exists.`
-        );
       }
 
       const rules = resolveStyles(theme, ...other);

@@ -81,13 +81,14 @@ describe('styleManager.js', () => {
       );
 
       assert.strictEqual(attach.callCount, 2, 'should call jssStyleSheet.attach() again');
-      assert.strictEqual(styleManager.sheetMap.length, 2, 'should add a sheetMap item again');
+      assert.strictEqual(detach.callCount, 1, 'should call jssStyleSheet.detach()');
+      assert.strictEqual(styleManager.sheetMap.length, 1, 'should replace the sheetMap item');
     });
 
     describe('reset', () => {
       it('should detach the styleSheets and reset the sheetmap', () => {
         styleManager.reset();
-        assert.strictEqual(detach.callCount, 2, 'should call jssStyleSheet.detach() twice');
+        assert.strictEqual(detach.callCount, 2, 'should call jssStyleSheet.detach() again');
         assert.strictEqual(styleManager.sheetMap.length, 0, 'should empty the sheetmap');
       });
     });
