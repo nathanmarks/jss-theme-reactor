@@ -1,11 +1,14 @@
 // @flow weak
 
 import { Component, PropTypes } from 'react';
-import { create as createJss } from 'jss';
+import { create } from 'jss';
 import jssPreset from 'jss-preset-default';
 import { createStyleManager } from './styleManager';
 
-export function createThemeProvider(createDefaultTheme = () => ({})) {
+export function createThemeProvider(
+  createDefaultTheme = () => ({}),
+  createJss = () => create(jssPreset())
+) {
   class ThemeProvider extends Component {
     static propTypes = {
       children: PropTypes.node.isRequired,
@@ -46,7 +49,7 @@ export function createThemeProvider(createDefaultTheme = () => ({})) {
       const theme = props.theme || createDefaultTheme();
       const styleManager = props.styleManager || createStyleManager({
         theme,
-        jss: createJss(jssPreset()),
+        jss: createJss(),
       });
       return { theme, styleManager };
     }

@@ -20,6 +20,7 @@ describe('styleSheet.js', () => {
 
       assert.strictEqual(styleSheet.toString(), '[object Object]');
       assert.strictEqual(styleSheet.name, 'foo', 'should set the name');
+      assert.strictEqual(styleSheet.options.priority, 50, 'should set the default priority to 50');
     });
   });
 

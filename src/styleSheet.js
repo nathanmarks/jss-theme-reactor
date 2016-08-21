@@ -11,7 +11,7 @@ export function createStyleSheet(name, callback, options = {}) {
   const styleSheet = {};
   styleSheet.name = name;
   styleSheet.callback = callback;
-  styleSheet.options = options;
+  styleSheet.options = { priority: 50, ...options };
   styleSheet.resolveStyles = (...args) =>
     resolveStyles(styleSheet, ...args);
   return styleSheet;
