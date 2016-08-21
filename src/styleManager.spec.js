@@ -8,13 +8,16 @@ describe('styleManager.js', () => {
   let styleManager;
   let jss;
   let attach;
-  let sheetMap;
+  let detach;
 
   before(() => {
-    sheetMap = [];
     attach = stub().returns({ classes: { base: 'base-1234' } });
-    jss = { createStyleSheet: stub().returns({ attach }) };
-    styleManager = createStyleManager({ jss, sheetMap, theme: { color: 'red' } });
+    detach = spy();
+    jss = {
+      sheets: { registry: [] },
+      createStyleSheet: stub().returns({ attach, detach }),
+    };
+    styleManager = createStyleManager({ jss, theme: { color: 'red' } });
   });
 
   it('should create a styleManager object', () => {
@@ -44,7 +47,7 @@ describe('styleManager.js', () => {
       assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jss.createStyleSheet()');
       assert.strictEqual(jss.createStyleSheet.calledWith(styleSheet1.resolveStyles()), true);
       assert.strictEqual(attach.callCount, 1, 'should call jssStyleSheet.attach()');
-      assert.strictEqual(sheetMap.length, 1, 'should add a sheetMap item');
+      assert.strictEqual(styleManager.sheetMap.length, 1, 'should add a sheetMap item');
       assert.strictEqual(classes.base, 'base-1234', 'should return the className');
     });
 
@@ -66,6 +69,17 @@ describe('styleManager.js', () => {
         warningSpy.calledWith('Warning: A styleSheet with the name foo already exists.'),
         true
       );
+
+      assert.strictEqual(attach.callCount, 2, 'should call jssStyleSheet.attach() again');
+      assert.strictEqual(styleManager.sheetMap.length, 2, 'should add a sheetMap item again');
+    });
+
+    describe('reset', () => {
+      it('should detach the styleSheets and reset the sheetmap', () => {
+        styleManager.reset();
+        assert.strictEqual(detach.callCount, 2, 'should call jssStyleSheet.detach() twice');
+        assert.strictEqual(styleManager.sheetMap.length, 0, 'should empty the sheetmap');
+      });
     });
   });
 

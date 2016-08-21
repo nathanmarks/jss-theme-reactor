@@ -23,7 +23,9 @@ import { find } from './utils';
  * @param  {Object}  config.theme={}           - Theme object
  * @return {module:styleManager~styleManager}  - styleManager
  */
-export function createStyleManager({ jss, theme = {}, sheetMap = [] } = {}) {
+export function createStyleManager({ jss, theme = {} } = {}) {
+  let sheetMap = [];
+
   /**
    * styleManager description
    *
@@ -31,8 +33,10 @@ export function createStyleManager({ jss, theme = {}, sheetMap = [] } = {}) {
    * @type {Object}
    */
   const styleManager = {
+    get sheetMap() { return sheetMap; },
     jss,
     reset,
+    rerender,
     theme,
     render,
     getClasses,
@@ -92,13 +96,19 @@ export function createStyleManager({ jss, theme = {}, sheetMap = [] } = {}) {
    * Replace the current theme with a new theme
    *
    * @param  {Object}  newTheme    - New theme object
-   * @param  {boolean} shouldReset - Set to true to reset the renderer
+   * @param  {boolean} shouldReset - Set to true to rerender the renderer
    */
   function updateTheme(newTheme, shouldReset = true) {
     styleManager.theme = newTheme;
     if (shouldReset) {
-      reset();
+      rerender();
     }
+  }
+
+  function reset() {
+    sheetMap.forEach(({ jssStyleSheet }) => jssStyleSheet.detach());
+    jss.sheets.registry = [];
+    sheetMap = [];
   }
 
   /**
@@ -106,15 +116,10 @@ export function createStyleManager({ jss, theme = {}, sheetMap = [] } = {}) {
    *
    * @memberOf module:styleManager~styleManager
    */
-  function reset() {
-    const sheets = [];
-    sheetMap.forEach(({ other, styleSheet, jssStyleSheet }) => {
-      jssStyleSheet.detach();
-      sheets.push([styleSheet, other]);
-    });
-    jss.sheets.registry = [];
-    sheetMap = [];
-    sheets.forEach((n) => render(...n));
+  function rerender() {
+    const sheets = [...sheetMap];
+    reset();
+    sheets.forEach((n) => render(n.styleSheet, ...n.other));
   }
 
   function prepareInline(declaration) {
