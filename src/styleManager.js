@@ -65,7 +65,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     let mapping = find(sheetMap, { styleSheet });
 
     if (!mapping) {
-      const { name, resolveStyles } = styleSheet;
+      const { name, resolveStyles, options } = styleSheet;
 
       if (process.env.NODE_ENV !== 'production') {
         // hmr support
@@ -82,7 +82,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
       }
 
       const rules = resolveStyles(theme, ...other);
-      const jssStyleSheet = jss.createStyleSheet(rules, { meta: name });
+      const jssStyleSheet = jss.createStyleSheet(rules, { meta: name, ...options });
       const { classes } = jssStyleSheet.attach();
 
       mapping = { name, classes, styleSheet, jssStyleSheet, other };

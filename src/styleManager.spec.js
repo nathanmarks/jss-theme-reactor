@@ -38,14 +38,24 @@ describe('styleManager.js', () => {
         base: {
           backgroundColor: 'red',
         },
-      }));
+      }), { woof: 'meow' });
     });
 
     it('should render a sheet using the renderer and return the classes', () => {
       const classes = styleManager.render(styleSheet1);
 
       assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jss.createStyleSheet()');
-      assert.strictEqual(jss.createStyleSheet.calledWith(styleSheet1.resolveStyles()), true);
+      assert.strictEqual(
+        jss.createStyleSheet.calledWith(
+          styleSheet1.resolveStyles(),
+          {
+            meta: 'foo',
+            woof: 'meow',
+          }
+        ),
+        true,
+        'should pass the raw styles and options to jss'
+      );
       assert.strictEqual(attach.callCount, 1, 'should call jssStyleSheet.attach()');
       assert.strictEqual(styleManager.sheetMap.length, 1, 'should add a sheetMap item');
       assert.strictEqual(classes.base, 'base-1234', 'should return the className');
