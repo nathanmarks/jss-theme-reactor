@@ -1,6 +1,8 @@
 import warning from 'warning';
-import prefixAll from 'inline-style-prefixer/static';
+import jssVendorPrefixer from 'jss-vendor-prefixer';
 import { find, findIndex } from './utils';
+
+const prefixRule = jssVendorPrefixer();
 
 /**
  * styleManager module. Used to create styleManager objects.
@@ -95,7 +97,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    * @param  {boolean} shouldReset - Set to true to rerender the renderer
    */
   function updateTheme(newTheme, shouldReset = true) {
-    styleManager.theme = newTheme;
+    theme = newTheme;
     if (shouldReset) {
       rerender();
     }
@@ -123,7 +125,14 @@ export function createStyleManager({ jss, theme = {} } = {}) {
       declaration = declaration(theme);
     }
 
-    return prefixAll(declaration);
+    const rule = {
+      type: 'regular',
+      style: declaration,
+    };
+
+    prefixRule(rule);
+
+    return rule.style;
   }
 
   return styleManager;
