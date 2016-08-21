@@ -30,10 +30,10 @@ describe('<ThemeProvider>', () => {
         'object',
         'should store styleManager as an instance property'
       );
-      assert.strictEqual(
+      assert.notStrictEqual(
         wrapper.instance().theme,
         wrapper2.instance().theme,
-        'should have the same default theme'
+        'should have a unique instance of the theme'
       );
       assert.notStrictEqual(
         wrapper.instance().styleManager,

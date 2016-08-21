@@ -5,16 +5,12 @@ import { create as createJss } from 'jss';
 import jssPreset from 'jss-preset-default';
 import { createStyleManager } from './styleManager';
 
-export function createThemeProvider(defaultTheme = {}) {
+export function createThemeProvider(createDefaultTheme = () => ({})) {
   class ThemeProvider extends Component {
     static propTypes = {
       children: PropTypes.node.isRequired,
       styleManager: PropTypes.object,
       theme: PropTypes.object,
-    };
-
-    static defaultProps = {
-      theme: defaultTheme,
     };
 
     static childContextTypes = {
@@ -47,7 +43,7 @@ export function createThemeProvider(defaultTheme = {}) {
     styleManager = undefined;
 
     createDefaultContext(props = {}) {
-      const theme = props.theme || defaultTheme;
+      const theme = props.theme || createDefaultTheme();
       const styleManager = props.styleManager || createStyleManager({
         theme,
         jss: createJss(jssPreset()),
