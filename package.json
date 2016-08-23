@@ -1,7 +1,7 @@
 {
   "name": "jss-theme-reactor-build",
   "private": true,
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0-alpha.9",
   "scripts": {
     "build": "babel src --ignore *.spec.js --out-dir build && babel-node scripts/copy-files.js",
     "clean": "rimraf build",
