@@ -26,9 +26,6 @@
   "bugs": {
     "url": "https://github.com/nathanmarks/jss-theme-reactor/issues"
   },
-  "dependencies": {
-    "warning": "^3.0.0"
-  },
   "peerDependencies": {
     "jss": "^5.4.0"
   },

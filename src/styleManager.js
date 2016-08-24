@@ -1,9 +1,7 @@
-import warning from 'warning';
 import jssVendorPrefixer from 'jss-vendor-prefixer';
 import { find, findIndex } from './utils';
 
 const prefixRule = jssVendorPrefixer();
-const warned = [];
 
 /**
  * styleManager module. Used to create styleManager objects.
@@ -75,13 +73,6 @@ export function createStyleManager({ jss, theme = {} } = {}) {
       if (looseIndex !== -1) {
         sheetMap[looseIndex].jssStyleSheet.detach();
         sheetMap.splice(looseIndex, 1);
-        // if (process.env.NODE_ENV !== 'production') {
-        //   warning(
-        //     warned.indexOf(name) !== -1,
-        //     `A styleSheet with the name ${name} already exists.`
-        //   );
-        //   warned.push(name);
-        // }
       }
 
       const rules = resolveStyles(theme, ...other);

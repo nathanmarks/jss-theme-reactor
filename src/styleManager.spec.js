@@ -67,31 +67,10 @@ describe('styleManager.js', () => {
       assert.strictEqual(classes.base, 'base-1234', 'should return the className');
     });
 
-    it('should then throw a warning when rendering a sheet with the same name', () => {
-      const styleSheet2 = createStyleSheet('foo', () => ({
-        base: {
-          backgroundColor: 'red',
-        },
-      }));
-
-      // const warningSpy = spy(console, 'error');
-      styleManager.render(styleSheet2);
-      // assert.strictEqual(
-      //   warningSpy.calledWith('Warning: A styleSheet with the name foo already exists.'),
-      //   true
-      // );
-
-      assert.strictEqual(attach.callCount, 2, 'should call jssStyleSheet.attach() again');
+    it('should detach the styleSheets and reset the sheetmap', () => {
+      styleManager.reset();
       assert.strictEqual(detach.callCount, 1, 'should call jssStyleSheet.detach()');
-      assert.strictEqual(styleManager.sheetMap.length, 1, 'should replace the sheetMap item');
-    });
-
-    describe('reset', () => {
-      it('should detach the styleSheets and reset the sheetmap', () => {
-        styleManager.reset();
-        assert.strictEqual(detach.callCount, 2, 'should call jssStyleSheet.detach() again');
-        assert.strictEqual(styleManager.sheetMap.length, 0, 'should empty the sheetmap');
-      });
+      assert.strictEqual(styleManager.sheetMap.length, 0, 'should empty the sheetmap');
     });
   });
 
