@@ -51,7 +51,7 @@ describe('styleManager.js', () => {
           {
             meta: 'foo',
             woof: 'meow',
-            priority: 50,
+            index: 50,
           }
         ),
         true,
