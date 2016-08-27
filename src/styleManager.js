@@ -12,13 +12,6 @@ const prefixRule = jssVendorPrefixer();
 /**
  * Creates a new styleManager
  *
- * @example
- *
- * ```javascript
- * import { createStyleManager } from 'stylishly/styleManager';
- * const styleManager = createStyleManager();
- * ```
- *
  * @param  {Object}  config                    - Config
  * @param  {Object}  config.jss                - Jss instance
  * @param  {Object}  config.theme={}           - Theme object

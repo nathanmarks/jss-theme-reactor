@@ -1,5 +1,3 @@
-// @flow weak
-
 import { Component, PropTypes } from 'react';
 import { create } from 'jss';
 import jssPreset from 'jss-preset-default';

@@ -1,3 +1,8 @@
+/**
+ * styleSheet module. Used to create styleSheet objects.
+ *
+ * @module styleSheet
+ */
 
 /**
  * Core function used to create styleSheet objects
