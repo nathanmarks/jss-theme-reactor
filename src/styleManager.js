@@ -29,10 +29,10 @@ export function createStyleManager({ jss, theme = {} } = {}) {
   const styleManager = {
     get sheetMap() { return sheetMap; },
     jss,
-    reset,
-    rerender,
     theme,
     render,
+    rerender,
+    reset,
     getClasses,
     updateTheme,
     prepareInline,
@@ -59,7 +59,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     let mapping = find(sheetMap, { styleSheet });
 
     if (!mapping) {
-      const { name, resolveStyles, options } = styleSheet;
+      const { name, createRules, options } = styleSheet;
 
       const looseIndex = findIndex(sheetMap, { name });
 
@@ -68,7 +68,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
         sheetMap.splice(looseIndex, 1);
       }
 
-      const rules = resolveStyles(theme, ...other);
+      const rules = createRules(theme, ...other);
       const jssStyleSheet = jss.createStyleSheet(rules, { meta: name, ...options });
       const { classes } = jssStyleSheet.attach();
 

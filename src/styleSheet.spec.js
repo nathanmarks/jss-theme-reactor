@@ -20,14 +20,13 @@ describe('styleSheet.js', () => {
 
       assert.strictEqual(styleSheet.toString(), '[object Object]');
       assert.strictEqual(styleSheet.name, 'foo', 'should set the name');
-      assert.strictEqual(styleSheet.options.index, 50, 'should set the default index to 50');
     });
   });
 
   describe('styleSheet', () => {
     let styleSheet;
 
-    before(() => {
+    beforeEach(() => {
       styleSheet = createStyleSheet('foo', (theme) => ({
         button: {
           color: theme.color,
@@ -36,7 +35,7 @@ describe('styleSheet.js', () => {
     });
 
     it('should resolve styles using the theme object', () => {
-      const styles = styleSheet.resolveStyles({ color: 'red' });
+      const styles = styleSheet.createRules({ color: 'red' });
       assert.deepEqual(styles, {
         button: {
           color: 'red',
@@ -44,8 +43,44 @@ describe('styleSheet.js', () => {
       });
     });
 
-    it('should store options on the object', () => {
-      assert.strictEqual(styleSheet.options.option, 'value');
+    describe('styleSheet.options', () => {
+      it('should store options on the object', () => {
+        assert.strictEqual(styleSheet.options.option, 'value');
+      });
+    });
+
+    describe('styleSheet.registerLocalTheme', () => {
+      it('should be a function', () => {
+        assert.strictEqual(typeof styleSheet.registerLocalTheme, 'function');
+      });
+
+      describe('creating rules with and without a local theme', () => {
+        let createLocalTheme;
+
+        beforeEach(() => {
+          createLocalTheme = function () {
+            return { color: 'blue' };
+          };
+          styleSheet.registerLocalTheme(createLocalTheme);
+        });
+
+        it('should register a local theme on the styleSheet', () => {
+          assert.strictEqual(
+            styleSheet.createLocalTheme,
+            createLocalTheme,
+            'should store the callback'
+          );
+        });
+
+        it('should resolve styles using the local theme object', () => {
+          const styles = styleSheet.createRules({ color: 'red' });
+          assert.deepEqual(styles, {
+            button: {
+              color: 'blue',
+            },
+          });
+        });
+      });
     });
   });
 });

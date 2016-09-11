@@ -8,20 +8,31 @@
  * Core function used to create styleSheet objects
  *
  * @param  {string}   name          - Stylesheet name, should be unique
- * @param  {Function} callback      - Should return the raw rules object
+ * @param  {Function} callback      - Should return the raw rules object, passed
+ *                                    `theme` as arg1
  * @param  {Object}   options       - Additional options
  * @return {Object}                 - styleSheet object
  */
 export function createStyleSheet(name, callback, options = {}) {
-  const styleSheet = {};
-  styleSheet.name = name;
-  styleSheet.callback = callback;
-  styleSheet.options = { index: 50, ...options };
-  styleSheet.resolveStyles = (...args) =>
-    resolveStyles(styleSheet, ...args);
-  return styleSheet;
-}
+  const styleSheet = {
+    name,
+    options,
+    createRules,
+    createLocalTheme: undefined,
+    registerLocalTheme,
+  };
 
-export function resolveStyles(styleSheet, ...args) {
-  return styleSheet.callback(...args);
+  function createRules(theme, ...other) {
+    if (styleSheet.createLocalTheme) {
+      theme = styleSheet.createLocalTheme(theme);
+    }
+
+    return callback(theme, ...other);
+  }
+
+  function registerLocalTheme(cb) {
+    styleSheet.createLocalTheme = cb;
+  }
+
+  return styleSheet;
 }
