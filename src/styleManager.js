@@ -56,27 +56,40 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    * @return {Object}            - classNames keyed by styleSheet property names
    */
   function render(styleSheet, ...other) {
-    let mapping = find(sheetMap, { styleSheet });
+    const index = findIndex(sheetMap, { name: styleSheet.name });
 
-    if (!mapping) {
-      const { name, createRules, options } = styleSheet;
+    if (index === -1) {
+      return renderNew(styleSheet, ...other);
+    }
 
-      const looseIndex = findIndex(sheetMap, { name });
+    const mapping = sheetMap[index];
 
-      if (looseIndex !== -1) {
-        sheetMap[looseIndex].jssStyleSheet.detach();
-        sheetMap.splice(looseIndex, 1);
-      }
+    if (mapping.styleSheet !== styleSheet) {
+      jss.removeStyleSheet(sheetMap[index].jssStyleSheet);
+      sheetMap.splice(index, 1);
 
-      const rules = createRules(theme, ...other);
-      const jssStyleSheet = jss.createStyleSheet(rules, { meta: name, ...options });
-      const { classes } = jssStyleSheet.attach();
-
-      mapping = { name, classes, styleSheet, jssStyleSheet, other };
-      sheetMap.push(mapping);
+      return renderNew(styleSheet, ...other);
     }
 
     return mapping.classes;
+  }
+
+  /**
+   * @private
+   * @memberOf module:styleManager~styleManager
+   * @param  {Object} styleSheet - styleSheet object created by createStyleSheet()
+   * @return {Object}            - classNames keyed by styleSheet property names
+   */
+  function renderNew(styleSheet, ...other) {
+    const { name, createRules, options } = styleSheet;
+
+    const rules = createRules(theme, ...other);
+    const jssStyleSheet = jss.createStyleSheet(rules, { meta: name, ...options });
+    const { classes } = jssStyleSheet.attach();
+
+    sheetMap.push({ name, classes, styleSheet, jssStyleSheet, other });
+
+    return classes;
   }
 
   /**
