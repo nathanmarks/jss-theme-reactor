@@ -80,6 +80,17 @@ describe('styleSheet.js', () => {
             },
           });
         });
+
+        it('should resolve styles using the custom local theme', () => {
+          const globalTheme = { color: 'red' };
+          const customTheme = { color: 'purple' };
+          const styles = styleSheet.createRules(globalTheme, customTheme);
+          assert.deepEqual(styles, {
+            button: {
+              color: 'purple',
+            },
+          });
+        });
       });
     });
   });

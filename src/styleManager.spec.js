@@ -30,7 +30,7 @@ describe('styleManager.js', () => {
     assert.strictEqual(typeof styleManager.prepareInline, 'function');
   });
 
-  describe('render()', () => {
+  describe('render(styleSheet)', () => {
     let styleSheet1;
 
     before(() => {

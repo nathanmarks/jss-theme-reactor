@@ -22,12 +22,15 @@ export function createStyleSheet(name, callback, options = {}) {
     registerLocalTheme,
   };
 
-  function createRules(theme, ...other) {
+  function createRules(theme, customTheme) {
     if (styleSheet.createLocalTheme) {
       theme = styleSheet.createLocalTheme(theme);
+      if (customTheme) {
+        Object.assign(theme, customTheme);
+      }
     }
 
-    return callback(theme, ...other);
+    return callback(theme);
   }
 
   function registerLocalTheme(cb) {
