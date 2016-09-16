@@ -96,5 +96,73 @@ describe('react component integration', () => {
         selectorText.replace('.', '')
       );
     });
+
+    describe('with multiple themes', () => {
+      it('should render all 3 themes independently', () => {
+        const purpleTheme = {
+          color: 'purple',
+          fontSize: 16,
+          fontFamily: 'Helvetica',
+        };
+        const greenTheme = {
+          color: 'green',
+          fontSize: 18,
+          fontFamily: 'Comic Sans',
+        };
+
+        const wrapper = mount((
+          <ThemeProvider theme={theme}>
+            <div>
+              <Button id="button">Hello</Button>
+              <Button id="purpleButton" theme={purpleTheme}>Hello</Button>
+              <Button id="greenButton" theme={greenTheme}>Hello</Button>
+            </div>
+          </ThemeProvider>
+        ));
+
+        const styleSheets = window.document.head.getElementsByTagName('style');
+
+        assert.strictEqual(styleSheets.length, 3, 'should have 3 sheets');
+
+        assert.strictEqual(
+          styleSheets[0].getAttribute('data-meta'),
+          'button',
+          'should be the default button'
+        );
+
+        assert.strictEqual(
+          styleSheets[1].getAttribute('data-meta'),
+          `button-${hashObject(purpleTheme)}`,
+          'should be the purple button'
+        );
+
+        assert.strictEqual(
+          styleSheets[2].getAttribute('data-meta'),
+          `button-${hashObject(greenTheme)}`,
+          'should be the green button'
+        );
+
+        const defaultRule = styleSheets[0].sheet.cssRules[0];
+        assert.strictEqual(defaultRule.style.color, theme.palette.primary);
+        assert.strictEqual(
+          wrapper.find('#button').prop('className'),
+          defaultRule.selectorText.replace('.', '')
+        );
+
+        const purpleRule = styleSheets[1].sheet.cssRules[0];
+        assert.strictEqual(purpleRule.style.color, purpleTheme.color);
+        assert.strictEqual(
+          wrapper.find('#purpleButton').prop('className'),
+          purpleRule.selectorText.replace('.', '')
+        );
+
+        const greenRule = styleSheets[2].sheet.cssRules[0];
+        assert.strictEqual(greenRule.style.color, greenTheme.color);
+        assert.strictEqual(
+          wrapper.find('#greenButton').prop('className'),
+          greenRule.selectorText.replace('.', '')
+        );
+      });
+    });
   });
 });

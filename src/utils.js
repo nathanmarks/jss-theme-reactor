@@ -81,7 +81,7 @@ function murmurhash32(str) {
     ++i;
   }
 
-  switch (l) {
+  switch (l) { // eslint-disable-line default-case
     case 3: h ^= (str.charCodeAt(i + 2) & 0xff) << 16;
     case 2: h ^= (str.charCodeAt(i + 1) & 0xff) << 8; // eslint-disable-line no-fallthrough
     case 1: h ^= (str.charCodeAt(i) & 0xff); // eslint-disable-line no-fallthrough
