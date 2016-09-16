@@ -30,7 +30,7 @@ describe('styleManager.js', () => {
     assert.strictEqual(typeof styleManager.prepareInline, 'function');
   });
 
-  describe('render()', () => {
+  describe('render(styleSheet)', () => {
     let styleSheet1;
 
     before(() => {
@@ -47,11 +47,10 @@ describe('styleManager.js', () => {
       assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jss.createStyleSheet()');
       assert.strictEqual(
         jss.createStyleSheet.calledWith(
-          styleSheet1.resolveStyles(),
+          styleSheet1.createRules(),
           {
             meta: 'foo',
             woof: 'meow',
-            index: 50,
           }
         ),
         true,
