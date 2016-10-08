@@ -29,6 +29,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    */
   const styleManager = {
     get sheetMap() { return sheetMap; },
+    get sheetOrder() { return sheetOrder; },
     setSheetOrder,
     jss,
     theme,
