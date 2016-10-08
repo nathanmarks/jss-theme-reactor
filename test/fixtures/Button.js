@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import DomRenderer from 'jss/lib/backends/DomRenderer';
 import { createStyleSheet } from 'src';
 
 const styleSheet = createStyleSheet('button', (theme) => ({
@@ -7,7 +8,7 @@ const styleSheet = createStyleSheet('button', (theme) => ({
     fontSize: theme.fontSize,
     fontFamily: theme.fontFamily,
   },
-}));
+}), { Renderer: DomRenderer });
 
 styleSheet.registerLocalTheme((theme) => ({
   color: theme.palette.primary,

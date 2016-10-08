@@ -31,7 +31,6 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     jss,
     theme,
     render,
-    rerender,
     reset,
     getClasses,
     updateTheme,
@@ -55,7 +54,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
       }
 
       if (customTheme) {
-        if (!obj.hasOwnProperty('customTheme')) {
+        if (!obj.hasOwnProperty('customTheme') || !obj.customTheme) {
           return false;
         }
 
@@ -138,17 +137,6 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     sheetMap.forEach(({ jssStyleSheet }) => jssStyleSheet.detach());
     jss.sheets.registry = [];
     sheetMap = [];
-  }
-
-  /**
-   * Reset and replace all existing stylesheets
-   *
-   * @memberOf module:styleManager~styleManager
-   */
-  function rerender() {
-    const sheets = [...sheetMap];
-    reset();
-    sheets.forEach((n) => render(n.styleSheet, n.customTheme));
   }
 
   function prepareInline(declaration) {
