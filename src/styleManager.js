@@ -35,6 +35,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     theme,
     render,
     reset,
+    rerender,
     getClasses,
     updateTheme,
     prepareInline,
@@ -149,12 +150,12 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    * Replace the current theme with a new theme
    *
    * @param  {Object}  newTheme    - New theme object
-   * @param  {boolean} shouldReset - Set to true to rerender the renderer
+   * @param  {boolean} liveUpdate  - Set to true to liveUpdate the renderer
    */
-  function updateTheme(newTheme, shouldReset = true) {
+  function updateTheme(newTheme, liveUpdate = true) {
     theme = newTheme;
-    if (shouldReset) {
-      reset();
+    if (liveUpdate) {
+      rerender();
     }
   }
 
@@ -162,6 +163,17 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     sheetMap.forEach(({ jssStyleSheet }) => jssStyleSheet.detach());
     jss.sheets.registry = [];
     sheetMap = [];
+  }
+
+  /**
+   * Reset and update all existing stylesheets
+   *
+   * @memberOf module:styleManager~styleManager
+   */
+  function rerender() {
+    const sheets = [...sheetMap];
+    reset();
+    sheets.forEach((n) => render(n.styleSheet, ...n.other));
   }
 
   function prepareInline(declaration) {
