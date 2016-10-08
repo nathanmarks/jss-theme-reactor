@@ -4,7 +4,7 @@ import { stub, spy } from 'sinon';
 import { createStyleManager } from './styleManager';
 import { createStyleSheet } from './styleSheet';
 
-describe.only('styleManager.js', () => {
+describe('styleManager.js', () => {
   let styleManager;
   let jss;
   let attach;
@@ -63,8 +63,8 @@ describe.only('styleManager.js', () => {
     });
 
     it('should get the classes', () => {
-      const classes = styleManager.getClasses(styleSheet1);
-      assert.strictEqual(classes.base, 'base-1234', 'should return the className');
+      const classNames = styleManager.getClasses(styleSheet1);
+      assert.strictEqual(classNames.base, 'base-1234', 'should return the className');
     });
 
     it('should detach the styleSheets and reset the sheetmap', () => {
