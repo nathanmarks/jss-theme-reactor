@@ -173,7 +173,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
   function rerender() {
     const sheets = [...sheetMap];
     reset();
-    sheets.forEach((n) => render(n.styleSheet, ...n.other));
+    sheets.forEach((n) => render(n.styleSheet, n.customTheme));
   }
 
   function prepareInline(declaration) {
