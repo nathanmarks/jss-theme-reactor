@@ -37,17 +37,17 @@
 //     dom.destroy();
 //   });
 
-//   describe('rendering to the DOM', () => {
-//     it('should render the stylesheet to the DOM', function (done) {
+//   describe('rendering a custom theme', () => {
+//     it('should benchmark', function (done) {
 //       this.timeout(30000);
 //       const suite = new Benchmark.Suite();
 //       const customTheme = { color: 'blue', fontSize: 19, fontFamily: 'Helvetica' };
 
 //       suite
-//         .add('test', () => {
+//         .add('default', () => {
 //           styleManager.render(styleSheet);
 //         })
-//         .add('test 2', () => {
+//         .add('custom theme', () => {
 //           styleManager.render(styleSheet, customTheme);
 //         })
 //         .on('cycle', (event) => {
