@@ -19,6 +19,7 @@ const prefixRule = jssVendorPrefixer();
  */
 export function createStyleManager({ jss, theme = {} } = {}) {
   let sheetMap = [];
+  let sheetOrder;
 
   /**
    * styleManager description
@@ -28,6 +29,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    */
   const styleManager = {
     get sheetMap() { return sheetMap; },
+    setSheetOrder,
     jss,
     theme,
     render,
@@ -47,6 +49,13 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     return undefined;
   }
 
+  /**
+   * @private
+   *
+   * @param  {string} options.name
+   * @param  {Object} options.customTheme
+   * @return {number}
+   */
   function getMappingIndex({ name, customTheme }) {
     const index = findIndex(sheetMap, (obj) => {
       if (!obj.hasOwnProperty('name') || obj.name !== name) {
@@ -109,15 +118,30 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     const { name, createRules, options } = styleSheet;
 
     const rules = createRules(theme, customTheme);
-    const jssStyleSheet = jss.createStyleSheet(rules, {
+    const jssOptions = {
       meta: customTheme ? `${name}-${hashObject(customTheme)}` : name,
       ...options,
-    });
+    };
+
+    if (sheetOrder && !jssOptions.hasOwnProperty('index')) {
+      const index = sheetOrder.indexOf(name);
+      if (index === -1) {
+        jssOptions.index = sheetOrder.length;
+      } else {
+        jssOptions.index = index;
+      }
+    }
+
+    const jssStyleSheet = jss.createStyleSheet(rules, jssOptions);
     const { classes } = jssStyleSheet.attach();
 
     sheetMap.push({ name, classes, customTheme, styleSheet, jssStyleSheet });
 
     return classes;
+  }
+
+  function setSheetOrder(sheetNames) {
+    sheetOrder = sheetNames;
   }
 
   /**
@@ -129,7 +153,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
   function updateTheme(newTheme, shouldReset = true) {
     theme = newTheme;
     if (shouldReset) {
-      rerender();
+      reset();
     }
   }
 
