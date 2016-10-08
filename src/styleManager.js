@@ -31,7 +31,6 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     jss,
     theme,
     render,
-    rerender,
     reset,
     getClasses,
     updateTheme,
@@ -57,11 +56,10 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    * @return {Object}                        - classNames keyed by styleSheet property names
    */
   function render(styleSheet, customTheme) {
-    const hash = customTheme ? hashObject(customTheme) : undefined;
-    const index = findIndex(sheetMap, { name: styleSheet.name, hash });
+    const index = findIndex(sheetMap, { name: styleSheet.name, customTheme });
 
     if (index === -1) {
-      return renderNew(styleSheet, customTheme, hash);
+      return renderNew(styleSheet, customTheme);
     }
 
     const mapping = sheetMap[index];
@@ -70,7 +68,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
       jss.removeStyleSheet(sheetMap[index].jssStyleSheet);
       sheetMap.splice(index, 1);
 
-      return renderNew(styleSheet, customTheme, hash);
+      return renderNew(styleSheet, customTheme);
     }
 
     return mapping.classes;
@@ -78,22 +76,18 @@ export function createStyleManager({ jss, theme = {} } = {}) {
 
   /**
    * @private
-   * @memberOf module:styleManager~styleManager
    * @param  {Object}           styleSheet    - styleSheet object created by createStyleSheet()
    * @param  {Object|Function}  customTheme   -
    * @return {Object}                         - classNames keyed by styleSheet property names
    */
-  function renderNew(styleSheet, customTheme, hash) {
+  function renderNew(styleSheet) {
     const { name, createRules, options } = styleSheet;
 
-    const rules = createRules(theme, customTheme);
-    const jssStyleSheet = jss.createStyleSheet(rules, {
-      meta: hash ? `${name}-${hash}` : name,
-      ...options,
-    });
+    const rules = createRules(theme);
+    const jssStyleSheet = jss.createStyleSheet(rules, { meta: name, ...options });
     const { classes } = jssStyleSheet.attach();
 
-    sheetMap.push({ name, classes, hash, customTheme, styleSheet, jssStyleSheet });
+    sheetMap.push({ name, classes, styleSheet, jssStyleSheet });
 
     return classes;
   }
@@ -102,30 +96,18 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    * Replace the current theme with a new theme
    *
    * @param  {Object}  newTheme    - New theme object
-   * @param  {boolean} shouldReset - Set to true to rerender the renderer
+   * @param  {boolean} shouldReset - Set to true to reset styles
    */
   function updateTheme(newTheme, shouldReset = true) {
     theme = newTheme;
     if (shouldReset) {
-      rerender();
+      reset();
     }
   }
 
   function reset() {
-    sheetMap.forEach(({ jssStyleSheet }) => jssStyleSheet.detach());
-    jss.sheets.registry = [];
+    sheetMap.forEach(({ jssStyleSheet }) => jss.removeStyleSheet(jssStyleSheet));
     sheetMap = [];
-  }
-
-  /**
-   * Reset and replace all existing stylesheets
-   *
-   * @memberOf module:styleManager~styleManager
-   */
-  function rerender() {
-    const sheets = [...sheetMap];
-    reset();
-    sheets.forEach((n) => render(n.styleSheet, n.customTheme));
   }
 
   function prepareInline(declaration) {
