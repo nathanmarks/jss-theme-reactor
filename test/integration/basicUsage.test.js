@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { assert } from 'chai';
 import { create as createJss } from 'jss';
+import DomRenderer from 'jss/lib/backends/DomRenderer';
 import preset from 'jss-preset-default';
 import createDOM from 'test/dom';
 import { createStyleManager, createStyleSheet } from 'src';
@@ -29,7 +30,7 @@ describe('basic usage', () => {
         fontSize: theme.fontSize,
         fontFamily: theme.fontFamily,
       },
-    }));
+    }), { Renderer: DomRenderer });
   });
 
   after(() => {

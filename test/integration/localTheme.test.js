@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import { assert } from 'chai';
 import { create as createJss } from 'jss';
+import DomRenderer from 'jss/lib/backends/DomRenderer';
 import preset from 'jss-preset-default';
 import createDOM from 'test/dom';
 import { createStyleManager, createStyleSheet } from 'src';
@@ -33,7 +34,7 @@ describe('local theme', () => {
         fontSize: theme.fontSize,
         fontFamily: theme.fontFamily,
       },
-    }));
+    }), { Renderer: DomRenderer });
     styleSheet.registerLocalTheme((theme) => ({
       color: theme.palette.primary,
       fontSize: theme.typography.fontSize,
