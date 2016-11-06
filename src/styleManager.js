@@ -15,9 +15,13 @@ const prefixRule = jssVendorPrefixer();
  * @param  {Object}  config                    - Config
  * @param  {Object}  config.jss                - Jss instance
  * @param  {Object}  config.theme={}           - Theme object
- * @return {module:styleManager~styleManager}  - styleManager
+ * @return {module:styleManager~styleManager}
  */
-export function createStyleManager({ jss = {}, theme = {} } = {}) {
+export function createStyleManager({ jss, theme = {} } = {}) {
+  if (!jss) {
+    throw new Error('No JSS instance provided');
+  }
+
   let sheetMap = [];
   let sheetOrder;
 
@@ -48,47 +52,6 @@ export function createStyleManager({ jss = {}, theme = {} } = {}) {
     prepareInline,
   };
 
-  function getClasses(styleSheet) {
-    const mapping = find(sheetMap, { styleSheet });
-
-    if (mapping) {
-      return mapping.classes;
-    }
-
-    return undefined;
-  }
-
-  /**
-   * @private
-   *
-   * @param  {string} options.name
-   * @param  {Object} options.customTheme
-   * @return {number}
-   */
-  function getMappingIndex({ name, customTheme }) {
-    const index = findIndex(sheetMap, (obj) => {
-      if (!obj.hasOwnProperty('name') || obj.name !== name) {
-        return false;
-      }
-
-      if (customTheme) {
-        if (!obj.hasOwnProperty('customTheme') || !obj.customTheme) {
-          return false;
-        }
-
-        for (const key in obj.customTheme) {
-          if (customTheme[key] !== obj.customTheme[key]) {
-            return false;
-          }
-        }
-      }
-
-      return true;
-    });
-
-    return index;
-  }
-
   /**
    * Some mundane desc
    *
@@ -114,6 +77,23 @@ export function createStyleManager({ jss = {}, theme = {} } = {}) {
     }
 
     return mapping.classes;
+  }
+
+  /**
+   * Get classes for a given styleSheet object
+   *
+   * @memberOf module:styleManager~styleManager
+   * @param  {Object}      styleSheet - styleSheet object
+   * @return {Object|null}            - class map object
+   */
+  function getClasses(styleSheet) {
+    const mapping = find(sheetMap, { styleSheet });
+
+    if (mapping) {
+      return mapping.classes;
+    }
+
+    return null;
   }
 
   /**
@@ -149,6 +129,43 @@ export function createStyleManager({ jss = {}, theme = {} } = {}) {
     return classes;
   }
 
+  /**
+   * @private
+   * @memberOf module:styleManager~styleManager
+   * @param  {string} options.name
+   * @param  {Object} options.customTheme
+   * @return {number}
+   */
+  function getMappingIndex({ name, customTheme }) {
+    const index = findIndex(sheetMap, (obj) => {
+      if (!obj.hasOwnProperty('name') || obj.name !== name) {
+        return false;
+      }
+
+      if (customTheme) {
+        if (!obj.hasOwnProperty('customTheme') || !obj.customTheme) {
+          return false;
+        }
+
+        for (const key in obj.customTheme) {
+          if (customTheme[key] !== obj.customTheme[key]) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    });
+
+    return index;
+  }
+
+  /**
+   * Set DOM rendering order by sheet names.
+   *
+   * @memberOf module:styleManager~styleManager
+   * @param {Array} sheetNames - Sheet names sorted by rendering order
+   */
   function setSheetOrder(sheetNames) {
     sheetOrder = sheetNames;
   }
@@ -156,6 +173,7 @@ export function createStyleManager({ jss = {}, theme = {} } = {}) {
   /**
    * Replace the current theme with a new theme
    *
+   * @memberOf module:styleManager~styleManager
    * @param  {Object}  newTheme    - New theme object
    * @param  {boolean} liveUpdate  - Set to true to liveUpdate the renderer
    */
@@ -166,6 +184,11 @@ export function createStyleManager({ jss = {}, theme = {} } = {}) {
     }
   }
 
+  /**
+   * Reset JSS registry, remove sheets and empty the styleManager.
+   *
+   * @memberOf module:styleManager~styleManager
+   */
   function reset() {
     sheetMap.forEach(({ jssStyleSheet }) => jssStyleSheet.detach());
     jss.sheets.registry = [];
@@ -183,6 +206,12 @@ export function createStyleManager({ jss = {}, theme = {} } = {}) {
     sheets.forEach((n) => render(n.styleSheet, n.customTheme));
   }
 
+  /**
+   * Prepare inline styles using Theme Reactor
+   *
+   * @param  {Object|Function} declaration - Style object or callback function
+   * @return {Object}                      - Processed styles
+   */
   function prepareInline(declaration) {
     if (typeof declaration === 'function') {
       declaration = declaration(theme);

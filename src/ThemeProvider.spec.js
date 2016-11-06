@@ -45,7 +45,7 @@ describe('<ThemeProvider>', () => {
 
   describe('custom theme', () => {
     const theme = { color: 'red' };
-    const styleManager = createStyleManager({ theme });
+    const styleManager = createStyleManager({ theme, jss: {} });
 
     it('should use the custom theme and styleManager', () => {
       const wrapper = shallow(

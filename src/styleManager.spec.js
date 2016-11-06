@@ -21,6 +21,12 @@ describe('styleManager.js', () => {
     styleManager = createStyleManager({ jss, theme: { color: 'red' } });
   });
 
+  it('should throw if no jss instance is passed', () => {
+    assert.throws(() => {
+      createStyleManager();
+    });
+  });
+
   it('should create a styleManager object', () => {
     assert.strictEqual(typeof styleManager, 'object');
     assert.strictEqual(typeof styleManager.theme, 'object');

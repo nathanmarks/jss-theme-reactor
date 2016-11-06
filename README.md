@@ -97,6 +97,10 @@ styleManager module. Used to create styleManager objects.
     * _inner_
         * [~styleManager](#module_styleManager..styleManager) : <code>Object</code>
             * [.render(styleSheet, customTheme)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
+            * [.getClasses(styleSheet)](#module_styleManager..styleManager.getClasses) ⇒ <code>Object</code> &#124; <code>null</code>
+            * [.setSheetOrder(sheetNames)](#module_styleManager..styleManager.setSheetOrder)
+            * [.updateTheme(newTheme, liveUpdate)](#module_styleManager..styleManager.updateTheme)
+            * [.reset()](#module_styleManager..styleManager.reset)
             * [.rerender()](#module_styleManager..styleManager.rerender)
 
 
@@ -108,7 +112,7 @@ styleManager module. Used to create styleManager objects.
 Creates a new styleManager
 
 **Kind**: static method of <code>[styleManager](#module_styleManager)</code>  
-**Returns**: <code>[styleManager](#module_styleManager..styleManager)</code> - styleManager  
+**Returns**: <code>[styleManager](#module_styleManager..styleManager)</code>  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -129,6 +133,10 @@ styleManager description
 
 * [~styleManager](#module_styleManager..styleManager) : <code>Object</code>
     * [.render(styleSheet, customTheme)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
+    * [.getClasses(styleSheet)](#module_styleManager..styleManager.getClasses) ⇒ <code>Object</code> &#124; <code>null</code>
+    * [.setSheetOrder(sheetNames)](#module_styleManager..styleManager.setSheetOrder)
+    * [.updateTheme(newTheme, liveUpdate)](#module_styleManager..styleManager.updateTheme)
+    * [.reset()](#module_styleManager..styleManager.reset)
     * [.rerender()](#module_styleManager..styleManager.rerender)
 
 
@@ -146,6 +154,62 @@ Some mundane desc
 | --- | --- | --- |
 | styleSheet | <code>Object</code> | styleSheet object created by createStyleSheet() |
 | customTheme | <code>Object</code> &#124; <code>function</code> | - |
+
+
+-----
+
+<a name="module_styleManager..styleManager.getClasses"></a>
+
+#### styleManager.getClasses(styleSheet) ⇒ <code>Object</code> &#124; <code>null</code>
+Get classes for a given styleSheet object
+
+**Kind**: static method of <code>[styleManager](#module_styleManager..styleManager)</code>  
+**Returns**: <code>Object</code> &#124; <code>null</code> - class map object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| styleSheet | <code>Object</code> | styleSheet object |
+
+
+-----
+
+<a name="module_styleManager..styleManager.setSheetOrder"></a>
+
+#### styleManager.setSheetOrder(sheetNames)
+Set DOM rendering order by sheet names.
+
+**Kind**: static method of <code>[styleManager](#module_styleManager..styleManager)</code>  
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sheetNames | <code>Array</code> | Sheet names sorted by rendering order |
+
+
+-----
+
+<a name="module_styleManager..styleManager.updateTheme"></a>
+
+#### styleManager.updateTheme(newTheme, liveUpdate)
+Replace the current theme with a new theme
+
+**Kind**: static method of <code>[styleManager](#module_styleManager..styleManager)</code>  
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| newTheme | <code>Object</code> |  | New theme object |
+| liveUpdate | <code>boolean</code> | <code>true</code> | Set to true to liveUpdate the renderer |
+
+
+-----
+
+<a name="module_styleManager..styleManager.reset"></a>
+
+#### styleManager.reset()
+Reset JSS registry, remove sheets and empty the styleManager.
+
+**Kind**: static method of <code>[styleManager](#module_styleManager..styleManager)</code>  
 
 
 -----
