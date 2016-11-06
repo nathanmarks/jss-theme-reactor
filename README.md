@@ -76,14 +76,6 @@ Resulting document head:
 </dd>
 </dl>
 
-## Functions
-
-<dl>
-<dt><a href="#murmurhash32">murmurhash32(str)</a> ⇒ <code>string</code></dt>
-<dd><p>JS Implementation of MurmurHash2</p>
-</dd>
-</dl>
-
 <a name="module_styleManager"></a>
 
 ## styleManager
@@ -246,28 +238,6 @@ Core function used to create styleSheet objects
 | name | <code>string</code> | Stylesheet name, should be unique |
 | callback | <code>function</code> | Should return the raw rules object, passed                                    `theme` as arg1 |
 | options | <code>Object</code> | Additional options |
-
-
------
-
-<a name="murmurhash32"></a>
-
-## murmurhash32(str) ⇒ <code>string</code>
-JS Implementation of MurmurHash2
-
-**Kind**: global function
-**Returns**: <code>string</code> Base 36 encoded hash result  
-**See**
-
-- http://github.com/garycourt/murmurhash-js
-- http://sites.google.com/site/murmurhash/
-
-**Author:** <a href="mailto:gary.court@gmail.com">Gary Court</a>  
-**Author:** <a href="mailto:aappleby@gmail.com">Austin Appleby</a>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| str | <code>string</code> | ASCII only |
 
 
 -----

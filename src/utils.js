@@ -54,6 +54,7 @@ export function hashString(str) {
 }
 
 /**
+ * @private
  * JS Implementation of MurmurHash2
  *
  * @author <a href="mailto:gary.court@gmail.com">Gary Court</a>
