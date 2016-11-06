@@ -1,8 +1,4 @@
-# jss-theme-reactor
-
-[![Build Status](https://img.shields.io/circleci/project/nathanmarks/jss-theme-reactor/master.svg?style=flat-square)](https://circleci.com/gh/nathanmarks/jss-theme-reactor)
-[![Coverage Status](https://img.shields.io/coveralls/nathanmarks/jss-theme-reactor/master.svg?style=flat-square)](https://coveralls.io/github/nathanmarks/jss-theme-reactor)
-[![npm](https://img.shields.io/npm/v/jss-theme-reactor.svg?style=flat-square)](https://www.npmjs.com/package/jss-theme-reactor)
+# jss-theme-reactor [![Build Status](https://img.shields.io/circleci/project/nathanmarks/jss-theme-reactor/master.svg?style=flat-square)](https://circleci.com/gh/nathanmarks/jss-theme-reactor) [![Coverage Status](https://img.shields.io/coveralls/nathanmarks/jss-theme-reactor/master.svg?style=flat-square)](https://coveralls.io/github/nathanmarks/jss-theme-reactor) [![npm](https://img.shields.io/npm/v/jss-theme-reactor.svg?style=flat-square)](https://www.npmjs.com/package/jss-theme-reactor)
 
 ## Installation
 
@@ -14,7 +10,54 @@ $ npm install jss-theme-reactor jss jss-preset-default --save
 
 ## Usage
 
-### WIP. Soon.
+- [Basic example](#basic-example)
+- [React integration](#react-integration)
+- [Server-side rendering](#server-side-rendering)
+
+### Basic example
+
+A super simple example demonstrating the basic functionality.
+
+```javascript
+import { create as createJss } from 'jss';
+import preset from 'jss-preset-default';
+import { createStyleManager, createStyleSheet } from 'jss-theme-reactor';
+
+themeObj = {
+  fontFamily: 'Roboto',
+  fontSize: 12,
+  color: 'red',
+};
+
+styleManager = createStyleManager({
+  jss: createJss(preset()),
+  theme: themeObj,
+});
+
+styleSheet = createStyleSheet('button', (theme) => ({
+  root: {
+    color: theme.color,
+    fontSize: theme.fontSize,
+    fontFamily: theme.fontFamily,
+  },
+});
+
+const classes = styleManager.render(styleSheet);
+
+// classes.root === '.button__root-1l7rpve'
+```
+
+Resulting document head:
+
+```html
+<style type="text/css" data-jss="" data-meta="button">
+.button__root-1l7rpve {
+  color: red;
+  font-size: 12px;
+  font-family: Roboto;
+}
+</style>
+```
 
 [API Reference](#api-reference)
 
@@ -33,6 +76,14 @@ $ npm install jss-theme-reactor jss jss-preset-default --save
 </dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#murmurhash32">murmurhash32(str)</a> ⇒ <code>string</code></dt>
+<dd><p>JS Implementation of MurmurHash2</p>
+</dd>
+</dl>
+
 <a name="module_styleManager"></a>
 
 ## styleManager
@@ -45,7 +96,7 @@ styleManager module. Used to create styleManager objects.
         * [.createStyleManager(config)](#module_styleManager.createStyleManager) ⇒ <code>[styleManager](#module_styleManager..styleManager)</code>
     * _inner_
         * [~styleManager](#module_styleManager..styleManager) : <code>Object</code>
-            * [.render(styleSheet)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
+            * [.render(styleSheet, customTheme)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
             * [.rerender()](#module_styleManager..styleManager.rerender)
 
 
@@ -77,7 +128,7 @@ styleManager description
 
 
 * [~styleManager](#module_styleManager..styleManager) : <code>Object</code>
-    * [.render(styleSheet)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
+    * [.render(styleSheet, customTheme)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
     * [.rerender()](#module_styleManager..styleManager.rerender)
 
 
@@ -85,7 +136,7 @@ styleManager description
 
 <a name="module_styleManager..styleManager.render"></a>
 
-#### styleManager.render(styleSheet) ⇒ <code>Object</code>
+#### styleManager.render(styleSheet, customTheme) ⇒ <code>Object</code>
 Some mundane desc
 
 **Kind**: static method of <code>[styleManager](#module_styleManager..styleManager)</code>  
@@ -94,6 +145,7 @@ Some mundane desc
 | Param | Type | Description |
 | --- | --- | --- |
 | styleSheet | <code>Object</code> | styleSheet object created by createStyleSheet() |
+| customTheme | <code>Object</code> &#124; <code>function</code> | - |
 
 
 -----
@@ -101,7 +153,7 @@ Some mundane desc
 <a name="module_styleManager..styleManager.rerender"></a>
 
 #### styleManager.rerender()
-Reset and replace all existing stylesheets
+Reset and update all existing stylesheets
 
 **Kind**: static method of <code>[styleManager](#module_styleManager..styleManager)</code>  
 
@@ -130,6 +182,28 @@ Core function used to create styleSheet objects
 | name | <code>string</code> | Stylesheet name, should be unique |
 | callback | <code>function</code> | Should return the raw rules object, passed                                    `theme` as arg1 |
 | options | <code>Object</code> | Additional options |
+
+
+-----
+
+<a name="murmurhash32"></a>
+
+## murmurhash32(str) ⇒ <code>string</code>
+JS Implementation of MurmurHash2
+
+**Kind**: global function
+**Returns**: <code>string</code> Base 36 encoded hash result  
+**See**
+
+- http://github.com/garycourt/murmurhash-js
+- http://sites.google.com/site/murmurhash/
+
+**Author:** <a href="mailto:gary.court@gmail.com">Gary Court</a>  
+**Author:** <a href="mailto:aappleby@gmail.com">Austin Appleby</a>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| str | <code>string</code> | ASCII only |
 
 
 -----

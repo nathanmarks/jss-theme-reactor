@@ -1,5 +1,6 @@
 {
   "name": "jss-theme-reactor-build",
+  "description": "Powerful theming layer for use with the JSS library (CSS in JS)",
   "private": true,
   "version": "0.5.0",
   "scripts": {
@@ -14,10 +15,12 @@
   "author": "Nathan Marks <info@nathanmarks.io> (http://nathanmarks.io)",
   "keywords": [
     "jss",
-    "react",
     "css",
     "theme",
-    "js styles"
+    "theming",
+    "js styles",
+    "css in js",
+    "react"
   ],
   "repository": {
     "type": "git",
