@@ -6,16 +6,10 @@
 
 ## Installation
 
-First install [`jss`](https://github.com/cssinjs/jss).
+Install `jss-theme-reactor` along with [`jss`](https://github.com/cssinjs/jss).
 
 ```bash
-$ npm install jss --save
-```
-
-Then `jss-theme-reactor`.
-
-```bash
-$ npm install jss-theme-reactor --save
+$ npm install jss-theme-reactor jss jss-preset-default --save
 ```
 
 ## Usage

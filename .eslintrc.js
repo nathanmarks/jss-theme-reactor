@@ -19,7 +19,7 @@ module.exports = {
   rules: {
     'array-bracket-spacing': 'off', // use babel plugin rule
     'arrow-body-style': 'off',
-    'arrow-parens': 'error',
+    'arrow-parens': ['error', 'always'],
     'consistent-this': ['error', 'self'],
     'func-names': 'off',
     'newline-per-chained-call': 'off',
@@ -39,6 +39,7 @@ module.exports = {
     'import/no-named-as-default': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',
+    'import/extensions': 'off',
     'react/jsx-handler-names': ['error', {
       eventHandlerPrefix: 'handle',
       eventHandlerPropPrefix: 'on',
@@ -46,12 +47,8 @@ module.exports = {
     'react/jsx-filename-extension': ['error', {extensions: ['.js']}],
     'react/jsx-max-props-per-line': ['error', {maximum: 3}],
     'react/jsx-no-duplicate-props': 'error',
-    'react/no-danger': 'error',
-    'react/no-find-dom-node': 'warn',
-    'react/no-direct-mutation-state': 'error',
-    'react/no-set-state': 'off',
-    'react/no-string-refs': 'error',
-    'react/prefer-stateless-function': 'off',
+    'react/forbid-prop-types': 'off',
+    'react/no-unused-prop-types': 'off',
     'react/sort-comp': [2, {
       order: [
         'static-methods',

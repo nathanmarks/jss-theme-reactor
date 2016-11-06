@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise, no-plusplus */
 
 export function transform(obj, cb, accumulator) {
   Object.keys(obj).forEach((key) => {
@@ -45,7 +46,11 @@ export function contains(obj, pred) {
 // ordering of objects. Ben Alpert says that Facebook depends on this, so we
 // can probably depend on this too.
 export function hashObject(object) {
-  return murmurhash32(JSON.stringify(object));
+  return hashString(JSON.stringify(object));
+}
+
+export function hashString(str) {
+  return murmurhash32(str);
 }
 
 /**

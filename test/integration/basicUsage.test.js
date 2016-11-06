@@ -77,6 +77,12 @@ describe('basic usage', () => {
       );
 
       assert.strictEqual(
+        classes.root.indexOf('button__'),
+        0,
+        'should prefix the selector with the sheet name'
+      );
+
+      assert.strictEqual(
         `.${classes.root}`,
         selectorText,
         'should match the selectorText'
