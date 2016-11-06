@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
-import Nodemon from 'nodemon';
+import nodemon from 'nodemon';
 
-Nodemon({
+nodemon({
   args: process.argv.slice(2),
   exec: 'npm run -s test --',
   ext: 'js',
   watch: ['src/', 'test/'],
 });
 
-Nodemon.on('start', () => {
+nodemon.on('start', () => {
   console.log('Test have started');
 }).on('quit', () => {
   console.log('Test have quit');

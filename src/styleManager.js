@@ -1,5 +1,5 @@
 import jssVendorPrefixer from 'jss-vendor-prefixer';
-import { find, findIndex, hashObject } from './utils';
+import { find, findIndex, hashObject, hashString } from './utils';
 
 const prefixRule = jssVendorPrefixer();
 
@@ -17,9 +17,16 @@ const prefixRule = jssVendorPrefixer();
  * @param  {Object}  config.theme={}           - Theme object
  * @return {module:styleManager~styleManager}  - styleManager
  */
-export function createStyleManager({ jss, theme = {} } = {}) {
+export function createStyleManager({ jss = {}, theme = {} } = {}) {
   let sheetMap = [];
   let sheetOrder;
+
+  // Register custom jss generateClassName function
+  jss.generateClassName = function generateClassName(str, rule) {
+    const { meta } = rule.options.sheet.options;
+    const hash = hashString(str);
+    return `${meta}__${rule.name}-${hash}`;
+  };
 
   /**
    * styleManager description

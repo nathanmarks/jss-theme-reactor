@@ -15,6 +15,7 @@ describe('styleManager.js', () => {
     detach = spy();
     jss = {
       sheets: { registry: [] },
+      use: spy(),
       createStyleSheet: stub().returns({ attach, detach }),
     };
     styleManager = createStyleManager({ jss, theme: { color: 'red' } });

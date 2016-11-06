@@ -19,6 +19,15 @@ export function createThemeProvider(
       theme: PropTypes.object.isRequired,
     };
 
+    static createDefaultContext(props = {}) {
+      const theme = props.theme || createDefaultTheme();
+      const styleManager = props.styleManager || createStyleManager({
+        theme,
+        jss: createJss(),
+      });
+      return { theme, styleManager };
+    }
+
     getChildContext() {
       const { theme, styleManager } = this;
       return {
@@ -28,7 +37,7 @@ export function createThemeProvider(
     }
 
     componentWillMount() {
-      const { theme, styleManager } = this.createDefaultContext(this.props);
+      const { theme, styleManager } = ThemeProvider.createDefaultContext(this.props);
       this.theme = theme;
       this.styleManager = styleManager;
     }
@@ -42,15 +51,6 @@ export function createThemeProvider(
 
     theme = undefined;
     styleManager = undefined;
-
-    createDefaultContext(props = {}) {
-      const theme = props.theme || createDefaultTheme();
-      const styleManager = props.styleManager || createStyleManager({
-        theme,
-        jss: createJss(),
-      });
-      return { theme, styleManager };
-    }
 
     render() {
       return this.props.children;
