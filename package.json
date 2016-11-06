@@ -5,6 +5,7 @@
   "version": "0.5.3",
   "scripts": {
     "build": "babel src --ignore *.spec.js --out-dir build && babel-node scripts/copy-files.js && cd build",
+    "build-publish": "npm run build && cd build && npm publish && cd .. && npm run clean",
     "clean": "rimraf build",
     "docs": "jsdoc2md --configure docs/conf.json --files \"src/**/*.js\" -t docs/README.hbs.md -d 2 --partial \"./docs/partials/**/*.hbs\" --separators  -l JavaScript > README.md",
     "lint": "eslint src test/integration && echo \"eslint: no lint errors\"",
