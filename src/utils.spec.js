@@ -4,7 +4,6 @@ import {
   transform,
   contains,
   find,
-  hashObject,
 } from './utils';
 
 describe('utils.js', () => {
@@ -24,19 +23,6 @@ describe('utils.js', () => {
       assert.strictEqual(result[1], 'meow');
       assert.strictEqual(result[2], 'roar');
       assert.strictEqual(result[3], 'foo');
-    });
-  });
-
-  describe('hashObject', () => {
-    it('should create a deterministic hash', () => {
-      const hashes = Array(10);
-      const woof = hashObject({ foo: 'bar', woof: 'meow' });
-      const testA = hashes.map(() => hashObject({ foo: 'bar', woof: 'meow' }));
-      testA.forEach((hash, i) => {
-        if (i > 0) {
-          assert.strictEqual(hash, woof);
-        }
-      });
     });
   });
 

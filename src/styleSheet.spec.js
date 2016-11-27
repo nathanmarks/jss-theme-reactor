@@ -48,50 +48,5 @@ describe('styleSheet.js', () => {
         assert.strictEqual(styleSheet.options.option, 'value');
       });
     });
-
-    describe('styleSheet.registerLocalTheme', () => {
-      it('should be a function', () => {
-        assert.strictEqual(typeof styleSheet.registerLocalTheme, 'function');
-      });
-
-      describe('creating rules with and without a local theme', () => {
-        let createLocalTheme;
-
-        beforeEach(() => {
-          createLocalTheme = function () {
-            return { color: 'blue' };
-          };
-          styleSheet.registerLocalTheme(createLocalTheme);
-        });
-
-        it('should register a local theme on the styleSheet', () => {
-          assert.strictEqual(
-            styleSheet.createLocalTheme,
-            createLocalTheme,
-            'should store the callback'
-          );
-        });
-
-        it('should resolve styles using the local theme object', () => {
-          const styles = styleSheet.createRules({ color: 'red' });
-          assert.deepEqual(styles, {
-            button: {
-              color: 'blue',
-            },
-          });
-        });
-
-        it('should resolve styles using the custom local theme', () => {
-          const globalTheme = { color: 'red' };
-          const customTheme = { color: 'purple' };
-          const styles = styleSheet.createRules(globalTheme, customTheme);
-          assert.deepEqual(styles, {
-            button: {
-              color: 'purple',
-            },
-          });
-        });
-      });
-    });
   });
 });

@@ -18,23 +18,10 @@ export function createStyleSheet(name, callback, options = {}) {
     name,
     options,
     createRules,
-    createLocalTheme: undefined,
-    registerLocalTheme,
   };
 
-  function createRules(theme, customTheme) {
-    if (styleSheet.createLocalTheme) {
-      theme = styleSheet.createLocalTheme(theme);
-      if (customTheme) {
-        Object.assign(theme, customTheme);
-      }
-    }
-
+  function createRules(theme) {
     return callback(theme);
-  }
-
-  function registerLocalTheme(cb) {
-    styleSheet.createLocalTheme = cb;
   }
 
   return styleSheet;

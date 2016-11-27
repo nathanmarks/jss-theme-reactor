@@ -17,6 +17,7 @@ describe('styleManager.js', () => {
       sheets: { registry: [] },
       use: spy(),
       createStyleSheet: stub().returns({ attach, detach }),
+      removeStyleSheet: spy(),
     };
     styleManager = createStyleManager({ jss, theme: { color: 'red' } });
   });
@@ -64,9 +65,65 @@ describe('styleManager.js', () => {
         true,
         'should pass the raw styles and options to jss'
       );
+      assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jssStyleSheet.createStyleSheet()');
       assert.strictEqual(attach.callCount, 1, 'should call jssStyleSheet.attach()');
       assert.strictEqual(styleManager.sheetMap.length, 1, 'should add a sheetMap item');
       assert.strictEqual(classes.base, 'base-1234', 'should return the className');
+    });
+
+    it('should only attach the sheet once if called multiple times', () => {
+      classes = styleManager.render(styleSheet1);
+
+      assert.strictEqual(attach.callCount, 1, 'should call jssStyleSheet.attach()');
+      assert.strictEqual(classes.base, 'base-1234', 'should return the className');
+    });
+
+    it('should detach the styleSheets and reset the sheetmap', () => {
+      styleManager.reset();
+      assert.strictEqual(detach.callCount, 1, 'should call jssStyleSheet.detach()');
+      assert.strictEqual(styleManager.sheetMap.length, 0, 'should empty the sheetmap');
+    });
+
+    describe('hmr support (new styleSheet Object reference)', () => {
+      it('should replace the stylesheet', () => {
+        const styleSheet1Reloaded = createStyleSheet('foo', () => ({
+          base: {
+            backgroundColor: 'blue',
+          },
+        }), { woof: 'meow' });
+
+        jss.createStyleSheet.reset(); // reset spy from initial render
+
+        styleManager.render(styleSheet1Reloaded);
+
+        assert.strictEqual(
+          jss.createStyleSheet.calledWith(
+            styleSheet1Reloaded.createRules(),
+            {
+              meta: 'foo',
+              woof: 'meow',
+            }
+          ),
+          true,
+          'should pass the raw styles and options to jss'
+        );
+
+        assert.strictEqual(jss.removeStyleSheet.callCount, 1, 'should call jssStyleSheet.removeStyleSheet()');
+        assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jssStyleSheet.createStyleSheet()');
+      });
+    });
+  });
+
+  describe('getClasses', () => {
+    let styleSheet1;
+
+    beforeEach(() => {
+      styleSheet1 = createStyleSheet('foo', () => ({
+        base: {
+          backgroundColor: 'red',
+        },
+      }), { woof: 'meow' });
+      styleManager.render(styleSheet1);
     });
 
     it('should get the classes', () => {
@@ -74,10 +131,9 @@ describe('styleManager.js', () => {
       assert.strictEqual(classNames.base, 'base-1234', 'should return the className');
     });
 
-    it('should detach the styleSheets and reset the sheetmap', () => {
-      styleManager.reset();
-      assert.strictEqual(detach.callCount, 1, 'should call jssStyleSheet.detach()');
-      assert.strictEqual(styleManager.sheetMap.length, 0, 'should empty the sheetmap');
+    it('should return null', () => {
+      const classNames = styleManager.getClasses({});
+      assert.strictEqual(classNames, null, 'should return null');
     });
   });
 

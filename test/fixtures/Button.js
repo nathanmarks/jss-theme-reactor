@@ -3,23 +3,16 @@ import DomRenderer from 'jss/lib/backends/DomRenderer';
 import { createStyleSheet } from 'src';
 
 const styleSheet = createStyleSheet('button', (theme) => ({
-  button: {
-    color: theme.color,
-    fontSize: theme.fontSize,
-    fontFamily: theme.fontFamily,
+  root: {
+    color: theme.palette.primary,
+    fontSize: theme.typography.fontSize,
+    fontFamily: theme.typography.fontFamily,
   },
 }), { Renderer: DomRenderer });
-
-styleSheet.registerLocalTheme((theme) => ({
-  color: theme.palette.primary,
-  fontSize: theme.typography.fontSize,
-  fontFamily: theme.typography.fontFamily,
-}));
 
 export default class Button extends Component {
   static propTypes = {
     children: PropTypes.node,
-    theme: PropTypes.object,
   };
 
   static contextTypes = {
@@ -27,11 +20,11 @@ export default class Button extends Component {
   };
 
   render() {
-    const { children, theme, ...other } = this.props;
-    const classes = this.context.styleManager.render(styleSheet, theme);
+    const { children, ...other } = this.props;
+    const classes = this.context.styleManager.render(styleSheet);
 
     return (
-      <button className={classes.button} {...other}>{children}</button>
+      <button className={classes.root} {...other}>{children}</button>
     );
   }
 }

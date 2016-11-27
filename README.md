@@ -88,7 +88,7 @@ styleManager module. Used to create styleManager objects.
         * [.createStyleManager(config)](#module_styleManager.createStyleManager) ⇒ <code>[styleManager](#module_styleManager..styleManager)</code>
     * _inner_
         * [~styleManager](#module_styleManager..styleManager) : <code>Object</code>
-            * [.render(styleSheet, customTheme)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
+            * [.render(styleSheet)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
             * [.getClasses(styleSheet)](#module_styleManager..styleManager.getClasses) ⇒ <code>Object</code> &#124; <code>null</code>
             * [.setSheetOrder(sheetNames)](#module_styleManager..styleManager.setSheetOrder)
             * [.updateTheme(newTheme, liveUpdate)](#module_styleManager..styleManager.updateTheme)
@@ -124,7 +124,7 @@ styleManager description
 
 
 * [~styleManager](#module_styleManager..styleManager) : <code>Object</code>
-    * [.render(styleSheet, customTheme)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
+    * [.render(styleSheet)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
     * [.getClasses(styleSheet)](#module_styleManager..styleManager.getClasses) ⇒ <code>Object</code> &#124; <code>null</code>
     * [.setSheetOrder(sheetNames)](#module_styleManager..styleManager.setSheetOrder)
     * [.updateTheme(newTheme, liveUpdate)](#module_styleManager..styleManager.updateTheme)
@@ -136,7 +136,7 @@ styleManager description
 
 <a name="module_styleManager..styleManager.render"></a>
 
-#### styleManager.render(styleSheet, customTheme) ⇒ <code>Object</code>
+#### styleManager.render(styleSheet) ⇒ <code>Object</code>
 Some mundane desc
 
 **Kind**: static method of <code>[styleManager](#module_styleManager..styleManager)</code>  
@@ -145,7 +145,6 @@ Some mundane desc
 | Param | Type | Description |
 | --- | --- | --- |
 | styleSheet | <code>Object</code> | styleSheet object created by createStyleSheet() |
-| customTheme | <code>Object</code> &#124; <code>function</code> | - |
 
 
 -----
