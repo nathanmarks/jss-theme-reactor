@@ -2,10 +2,10 @@
 
 ## Installation
 
-Install `jss-theme-reactor` along with [`jss`](https://github.com/cssinjs/jss).
+Install `jss-theme-reactor`.
 
 ```bash
-$ npm install jss-theme-reactor jss jss-preset-default --save
+$ npm install jss-theme-reactor --save
 ```
 
 ## Usage
@@ -44,14 +44,14 @@ styleSheet = createStyleSheet('button', (theme) => ({
 
 const classes = styleManager.render(styleSheet);
 
-// classes.root === '.button__root-1l7rpve'
+// classes.root === '.button-root-1l7rpve'
 ```
 
 Resulting document head:
 
 ```html
 <style type="text/css" data-jss="" data-meta="button">
-.button__root-1l7rpve {
+.button-root-1l7rpve {
   color: red;
   font-size: 12px;
   font-family: Roboto;
@@ -91,7 +91,7 @@ styleManager module. Used to create styleManager objects.
             * [.render(styleSheet)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
             * [.getClasses(styleSheet)](#module_styleManager..styleManager.getClasses) ⇒ <code>Object</code> &#124; <code>null</code>
             * [.setSheetOrder(sheetNames)](#module_styleManager..styleManager.setSheetOrder)
-            * [.updateTheme(newTheme, liveUpdate)](#module_styleManager..styleManager.updateTheme)
+            * [.updateTheme(newTheme, shouldUpdate)](#module_styleManager..styleManager.updateTheme)
             * [.reset()](#module_styleManager..styleManager.reset)
             * [.rerender()](#module_styleManager..styleManager.rerender)
 
@@ -127,7 +127,7 @@ styleManager description
     * [.render(styleSheet)](#module_styleManager..styleManager.render) ⇒ <code>Object</code>
     * [.getClasses(styleSheet)](#module_styleManager..styleManager.getClasses) ⇒ <code>Object</code> &#124; <code>null</code>
     * [.setSheetOrder(sheetNames)](#module_styleManager..styleManager.setSheetOrder)
-    * [.updateTheme(newTheme, liveUpdate)](#module_styleManager..styleManager.updateTheme)
+    * [.updateTheme(newTheme, shouldUpdate)](#module_styleManager..styleManager.updateTheme)
     * [.reset()](#module_styleManager..styleManager.reset)
     * [.rerender()](#module_styleManager..styleManager.rerender)
 
@@ -181,7 +181,7 @@ Set DOM rendering order by sheet names.
 
 <a name="module_styleManager..styleManager.updateTheme"></a>
 
-#### styleManager.updateTheme(newTheme, liveUpdate)
+#### styleManager.updateTheme(newTheme, shouldUpdate)
 Replace the current theme with a new theme
 
 **Kind**: static method of <code>[styleManager](#module_styleManager..styleManager)</code>  
@@ -190,7 +190,7 @@ Replace the current theme with a new theme
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | newTheme | <code>Object</code> |  | New theme object |
-| liveUpdate | <code>boolean</code> | <code>true</code> | Set to true to liveUpdate the renderer |
+| shouldUpdate | <code>boolean</code> | <code>true</code> | Set to true to update sheets immediately |
 
 
 -----

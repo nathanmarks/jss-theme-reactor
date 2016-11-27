@@ -2,10 +2,10 @@
 
 ## Installation
 
-Install `jss-theme-reactor` along with [`jss`](https://github.com/cssinjs/jss).
+Install `jss-theme-reactor`.
 
 ```bash
-$ npm install jss-theme-reactor jss jss-preset-default --save
+$ npm install jss-theme-reactor --save
 ```
 
 ## Usage
@@ -44,14 +44,14 @@ styleSheet = createStyleSheet('button', (theme) => ({
 
 const classes = styleManager.render(styleSheet);
 
-// classes.root === '.button__root-1l7rpve'
+// classes.root === '.button-root-1l7rpve'
 ```
 
 Resulting document head:
 
 ```html
 <style type="text/css" data-jss="" data-meta="button">
-.button__root-1l7rpve {
+.button-root-1l7rpve {
   color: red;
   font-size: 12px;
   font-family: Roboto;
