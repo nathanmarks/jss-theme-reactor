@@ -1,5 +1,6 @@
 import jssVendorPrefixer from 'jss-vendor-prefixer';
-import { find, findIndex, hashObject, hashString } from './utils';
+import createHash from 'murmurhash-js/murmurhash3_gc';
+import { find, findIndex } from './utils';
 
 const prefixRule = jssVendorPrefixer();
 
@@ -28,8 +29,8 @@ export function createStyleManager({ jss, theme = {} } = {}) {
   // Register custom jss generateClassName function
   jss.generateClassName = function generateClassName(str, rule) {
     const { meta } = rule.options.sheet.options;
-    const hash = hashString(str);
-    return `${meta}__${rule.name}-${hash}`;
+    const hash = createHash(str);
+    return `${meta}-${rule.name}-${hash}`;
   };
 
   /**
@@ -57,14 +58,13 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    *
    * @memberOf module:styleManager~styleManager
    * @param  {Object}          styleSheet    - styleSheet object created by createStyleSheet()
-   * @param  {Object|Function} customTheme   -
    * @return {Object}                        - classNames keyed by styleSheet property names
    */
-  function render(styleSheet, customTheme) {
-    const index = getMappingIndex({ name: styleSheet.name, customTheme });
+  function render(styleSheet) {
+    const index = getMappingIndex(styleSheet.name);
 
     if (index === -1) {
-      return renderNew(styleSheet, customTheme);
+      return renderNew(styleSheet);
     }
 
     const mapping = sheetMap[index];
@@ -73,7 +73,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
       jss.removeStyleSheet(sheetMap[index].jssStyleSheet);
       sheetMap.splice(index, 1);
 
-      return renderNew(styleSheet, customTheme);
+      return renderNew(styleSheet);
     }
 
     return mapping.classes;
@@ -100,15 +100,14 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    * @private
    * @memberOf module:styleManager~styleManager
    * @param  {Object}           styleSheet    - styleSheet object created by createStyleSheet()
-   * @param  {Object|Function}  customTheme   -
    * @return {Object}                         - classNames keyed by styleSheet property names
    */
-  function renderNew(styleSheet, customTheme) {
+  function renderNew(styleSheet) {
     const { name, createRules, options } = styleSheet;
 
-    const rules = createRules(theme, customTheme);
+    const rules = createRules(theme);
     const jssOptions = {
-      meta: customTheme ? `${name}-${hashObject(customTheme)}` : name,
+      meta: name,
       ...options,
     };
 
@@ -124,7 +123,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     const jssStyleSheet = jss.createStyleSheet(rules, jssOptions);
     const { classes } = jssStyleSheet.attach();
 
-    sheetMap.push({ name, classes, customTheme, styleSheet, jssStyleSheet });
+    sheetMap.push({ name, classes, styleSheet, jssStyleSheet });
 
     return classes;
   }
@@ -133,25 +132,12 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    * @private
    * @memberOf module:styleManager~styleManager
    * @param  {string} options.name
-   * @param  {Object} options.customTheme
    * @return {number}
    */
-  function getMappingIndex({ name, customTheme }) {
+  function getMappingIndex(name) {
     const index = findIndex(sheetMap, (obj) => {
       if (!obj.hasOwnProperty('name') || obj.name !== name) {
         return false;
-      }
-
-      if (customTheme) {
-        if (!obj.hasOwnProperty('customTheme') || !obj.customTheme) {
-          return false;
-        }
-
-        for (const key in obj.customTheme) {
-          if (customTheme[key] !== obj.customTheme[key]) {
-            return false;
-          }
-        }
       }
 
       return true;
@@ -174,12 +160,12 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    * Replace the current theme with a new theme
    *
    * @memberOf module:styleManager~styleManager
-   * @param  {Object}  newTheme    - New theme object
-   * @param  {boolean} liveUpdate  - Set to true to liveUpdate the renderer
+   * @param  {Object}  newTheme      - New theme object
+   * @param  {boolean} shouldUpdate  - Set to true to update sheets immediately
    */
-  function updateTheme(newTheme, liveUpdate = true) {
+  function updateTheme(newTheme, shouldUpdate = true) {
     theme = newTheme;
-    if (liveUpdate) {
+    if (shouldUpdate) {
       rerender();
     }
   }
@@ -203,7 +189,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
   function rerender() {
     const sheets = [...sheetMap];
     reset();
-    sheets.forEach((n) => render(n.styleSheet, n.customTheme));
+    sheets.forEach((n) => render(n.styleSheet));
   }
 
   /**
