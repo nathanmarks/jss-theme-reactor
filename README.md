@@ -40,7 +40,7 @@ styleSheet = createStyleSheet('button', (theme) => ({
     fontSize: theme.fontSize,
     fontFamily: theme.fontFamily,
   },
-});
+}));
 
 const classes = styleManager.render(styleSheet);
 
