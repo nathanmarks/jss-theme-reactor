@@ -14,6 +14,7 @@ describe('styleManager.js', () => {
     attach = stub().returns({ classes: { base: 'base-1234' } });
     detach = spy();
     jss = {
+      options: {},
       sheets: { registry: [] },
       use: spy(),
       createStyleSheet: stub().returns({ attach, detach }),
