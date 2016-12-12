@@ -27,7 +27,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
   let sheetOrder;
 
   // Register custom jss generateClassName function
-  jss.generateClassName = function generateClassName(str, rule) {
+  jss.options.generateClassName = function generateClassName(str, rule) {
     const { meta } = rule.options.sheet.options;
     const hash = createHash(str);
     return `${meta}-${rule.name}-${hash}`;
