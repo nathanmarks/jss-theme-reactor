@@ -3,6 +3,7 @@ import { assert } from 'chai';
 import { create as createJss } from 'jss';
 import VirtualRenderer from 'jss/lib/backends/VirtualRenderer';
 import preset from 'jss-preset-default';
+import { stripIndent } from 'common-tags';
 import { createStyleManager, createStyleSheet } from 'src';
 
 describe('ssr', () => {
@@ -37,15 +38,15 @@ describe('ssr', () => {
     const styles = styleManager.sheetsToString();
 
     assert.strictEqual(
-      styles.replace(/\s/g, ''),
-      `
+      stripIndent`
         .icon-root-1243194637 {
           color: blue;
         }
         .button-root-3645560457 {
           color: red;
         }
-      `.replace(/\s/g, ''),
+      `,
+      styles,
     );
   });
 
@@ -57,15 +58,15 @@ describe('ssr', () => {
 
     const styles = styleManager.sheetsToString();
     assert.strictEqual(
-      styles.replace(/\s/g, ''),
-      `
+      stripIndent`
         .button-root-3645560457 {
           color: red;
         }
         .icon-root-1243194637 {
           color: blue;
         }
-      `.replace(/\s/g, ''),
+      `,
+      styles,
     );
   });
 });
