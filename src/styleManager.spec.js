@@ -15,7 +15,7 @@ describe('styleManager.js', () => {
     detach = spy();
     jss = {
       options: {},
-      sheets: { registry: [] },
+      sheets: {},
       use: spy(),
       createStyleSheet: stub().returns({ attach, detach }),
       removeStyleSheet: spy(),

@@ -177,7 +177,6 @@ export function createStyleManager({ jss, theme = {} } = {}) {
    */
   function reset() {
     sheetMap.forEach(({ jssStyleSheet }) => jssStyleSheet.detach());
-    jss.sheets.registry = [];
     sheetMap = [];
   }
 
