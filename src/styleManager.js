@@ -51,6 +51,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     getClasses,
     updateTheme,
     prepareInline,
+    sheetsToString,
   };
 
   /**
@@ -194,6 +195,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
   /**
    * Prepare inline styles using Theme Reactor
    *
+   * @memberOf module:styleManager~styleManager
    * @param  {Object|Function} declaration - Style object or callback function
    * @return {Object}                      - Processed styles
    */
@@ -210,6 +212,27 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     prefixRule(rule);
 
     return rule.style;
+  }
+
+  /**
+   * Render sheets to an HTML string
+   *
+   * @memberOf module:styleManager~styleManager
+   * @return {string} - HTML string of style elements + css
+   */
+  function sheetsToString() {
+    return sheetMap
+      .sort((a, b) => {
+        if (a.jssStyleSheet.options.index < b.jssStyleSheet.options.index) {
+          return -1;
+        }
+        if (a.jssStyleSheet.options.index > b.jssStyleSheet.options.index) {
+          return 1;
+        }
+        return 0;
+      })
+      .map((sheet) => sheet.jssStyleSheet.toString())
+      .join('\n');
   }
 
   return styleManager;

@@ -21,7 +21,11 @@ export function createStyleSheet(name, callback, options = {}) {
   };
 
   function createRules(theme) {
-    return callback(theme);
+    if (typeof callback === 'function') {
+      return callback(theme);
+    }
+
+    return callback;
   }
 
   return styleSheet;
