@@ -15,6 +15,7 @@ module.exports = {
   plugins: [
     'babel',
     'mocha',
+    'flowtype',
   ],
   rules: {
     'array-bracket-spacing': 'off', // use babel plugin rule
@@ -66,5 +67,10 @@ module.exports = {
     'mocha/no-global-tests': 'error',
     'mocha/no-pending-tests': 'error',
     'mocha/no-skipped-tests': 'error',
+    'flowtype/require-valid-file-annotation': ['error', 'always'],
+    'flowtype/require-parameter-type': 'error',
+    'flowtype/require-return-type': 'error',
+    'flowtype/space-after-type-colon': 'error',
+    'flowtype/space-before-type-colon': 'error',
   },
 };
