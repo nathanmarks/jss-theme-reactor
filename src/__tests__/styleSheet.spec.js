@@ -48,4 +48,46 @@ describe('styleSheet.js', () => {
       });
     });
   });
+
+  describe('theme overrides', () => {
+    describe('with a simple rule', () => {
+      let styleSheet;
+
+      function createSimpleRule() {
+        return {
+          bar: {
+            color: 'red',
+            width: 100,
+          },
+        };
+      }
+
+      beforeEach(() => {
+        styleSheet = createStyleSheet('foo', () => createSimpleRule());
+      });
+
+      it('should return the simple rule with no overrides', () => {
+        assert.deepEqual(styleSheet.createRules(), createSimpleRule());
+      });
+
+      it('should return the simple rule with overrides', () => {
+        const overrides = {
+          foo: {
+            bar: {
+              color: 'blue',
+            },
+          },
+        };
+
+        const expectedRules = createSimpleRule();
+
+        expectedRules.bar.color = 'blue';
+
+        assert.deepEqual(
+          styleSheet.createRules({ overrides }),
+          expectedRules
+        );
+      });
+    });
+  });
 });
