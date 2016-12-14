@@ -1,10 +1,9 @@
-/* eslint-env mocha */
 import { assert } from 'chai';
 import {
   transform,
   contains,
   find,
-} from './utils';
+} from '../utils';
 
 describe('utils.js', () => {
   describe('transform(obj, cb, accumulator)', () => {

@@ -4,8 +4,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { assert } from 'chai';
-import { createStyleManager } from './styleManager';
-import ThemeProvider from './ThemeProvider';
+import { createStyleManager } from '../styleManager';
+import ThemeProvider from '../ThemeProvider';
 
 describe('<ThemeProvider>', () => {
   describe('defaults', () => {
