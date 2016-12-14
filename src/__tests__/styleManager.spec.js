@@ -1,8 +1,7 @@
-/* eslint-env mocha */
 import { assert } from 'chai';
 import { stub, spy } from 'sinon';
-import { createStyleManager } from './styleManager';
-import { createStyleSheet } from './styleSheet';
+import { createStyleManager } from '../styleManager';
+import { createStyleSheet } from '../styleSheet';
 
 describe('styleManager.js', () => {
   let styleManager;
@@ -168,6 +167,11 @@ describe('styleManager.js', () => {
       styleManager.render(woof);
     });
 
+    it('should return the sheetOrder', () => {
+      const order = styleManager.sheetOrder;
+      assert.strictEqual(order, sheetOrder);
+    });
+
     it('should render a sheet using the renderer and pass the order index', () => {
       assert.strictEqual(
         jss.createStyleSheet.calledWith(
@@ -226,6 +230,14 @@ describe('styleManager.js', () => {
         color: theme.color,
       }));
       assert.deepEqual(styles, { display: 'block', color: 'red' }, 'should return themed styles');
+    });
+  });
+
+  describe('updateTheme', () => {
+    it('should replace the current theme', () => {
+      const newTheme = { color: 'green' };
+      styleManager.updateTheme(newTheme, false);
+      assert.strictEqual(styleManager.theme, newTheme);
     });
   });
 });

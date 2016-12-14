@@ -38,6 +38,7 @@ describe('ssr', () => {
     const styles = styleManager.sheetsToString();
 
     assert.strictEqual(
+      styles,
       stripIndent`
         .icon-root-1243194637 {
           color: blue;
@@ -45,8 +46,7 @@ describe('ssr', () => {
         .button-root-3645560457 {
           color: red;
         }
-      `,
-      styles,
+      `
     );
   });
 
@@ -58,6 +58,7 @@ describe('ssr', () => {
 
     const styles = styleManager.sheetsToString();
     assert.strictEqual(
+      styles,
       stripIndent`
         .button-root-3645560457 {
           color: red;
@@ -65,8 +66,7 @@ describe('ssr', () => {
         .icon-root-1243194637 {
           color: blue;
         }
-      `,
-      styles,
+      `
     );
   });
 });

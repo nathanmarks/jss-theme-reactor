@@ -1,9 +1,8 @@
-/* eslint-env mocha */
 import { assert } from 'chai';
 import {
   createStyleManager,
   createStyleSheet,
-} from './index';
+} from '../index';
 
 describe('index.js', () => {
   describe('exports', () => {

@@ -1,11 +1,12 @@
 [ignore]
-.*\.spec\.js
+.*/.*\.spec\.js
 .*/test/.*
 
 [include]
 src/
 
 [libs]
+flow/
 
 [options]
 unsafe.enable_getters_and_setters=true

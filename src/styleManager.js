@@ -1,45 +1,41 @@
+// @flow
+
 import jssVendorPrefixer from 'jss-vendor-prefixer';
+import type { Rule } from 'jss/lib/types';
 import createHash from 'murmurhash-js/murmurhash3_gc';
 import { find, findIndex } from './utils';
 
 const prefixRule = jssVendorPrefixer();
 
 /**
- * styleManager module. Used to create styleManager objects.
- *
- * @module styleManager
- */
-
-/**
  * Creates a new styleManager
- *
- * @param  {Object}  config                    - Config
- * @param  {Object}  config.jss                - Jss instance
- * @param  {Object}  config.theme={}           - Theme object
- * @return {module:styleManager~styleManager}
  */
-export function createStyleManager({ jss, theme = {} } = {}) {
+export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}): StyleManager {
   if (!jss) {
     throw new Error('No JSS instance provided');
   }
 
-  let sheetMap = [];
-  let sheetOrder;
+  let sheetMap: Array<SheetMapping> = [];
+  let sheetOrder: Array<string>;
 
   // Register custom jss generateClassName function
-  jss.options.generateClassName = function generateClassName(str, rule) {
-    const { meta } = rule.options.sheet.options;
+  jss.options.generateClassName = generateClassName;
+
+  function generateClassName(str: string, rule: Rule): string {
     const hash = createHash(str);
-    return `${meta}-${rule.name}-${hash}`;
-  };
+    str = rule.name ? `${rule.name}-${hash}` : hash;
+
+    // Simplify after next release with new method signature
+    if (rule.options.sheet && rule.options.sheet.options.meta) {
+      return `${rule.options.sheet.options.meta}-${str}`;
+    }
+    return str;
+  }
 
   /**
-   * styleManager description
-   *
-   * @name styleManager
-   * @type {Object}
+   * styleManager
    */
-  const styleManager = {
+  const styleManager: StyleManager = {
     get sheetMap() { return sheetMap; },
     get sheetOrder() { return sheetOrder; },
     setSheetOrder,
@@ -54,14 +50,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
     sheetsToString,
   };
 
-  /**
-   * Some mundane desc
-   *
-   * @memberOf module:styleManager~styleManager
-   * @param  {Object}          styleSheet    - styleSheet object created by createStyleSheet()
-   * @return {Object}                        - classNames keyed by styleSheet property names
-   */
-  function render(styleSheet) {
+  function render(styleSheet: ThemeReactorStyleSheet): Object {
     const index = getMappingIndex(styleSheet.name);
 
     if (index === -1) {
@@ -82,31 +71,19 @@ export function createStyleManager({ jss, theme = {} } = {}) {
 
   /**
    * Get classes for a given styleSheet object
-   *
-   * @memberOf module:styleManager~styleManager
-   * @param  {Object}      styleSheet - styleSheet object
-   * @return {Object|null}            - class map object
    */
-  function getClasses(styleSheet) {
+  function getClasses(styleSheet: ThemeReactorStyleSheet): Object|null {
     const mapping = find(sheetMap, { styleSheet });
-
-    if (mapping) {
-      return mapping.classes;
-    }
-
-    return null;
+    return mapping ? mapping.classes : null;
   }
 
   /**
    * @private
-   * @memberOf module:styleManager~styleManager
-   * @param  {Object}           styleSheet    - styleSheet object created by createStyleSheet()
-   * @return {Object}                         - classNames keyed by styleSheet property names
    */
-  function renderNew(styleSheet) {
+  function renderNew(styleSheet: ThemeReactorStyleSheet): Object {
     const { name, createRules, options } = styleSheet;
 
-    const rules = createRules(theme);
+    const rules = createRules(styleManager.theme);
     const jssOptions = {
       meta: name,
       ...options,
@@ -131,12 +108,9 @@ export function createStyleManager({ jss, theme = {} } = {}) {
 
   /**
    * @private
-   * @memberOf module:styleManager~styleManager
-   * @param  {string} options.name
-   * @return {number}
    */
-  function getMappingIndex(name) {
-    const index = findIndex(sheetMap, (obj) => {
+  function getMappingIndex(name: string): number {
+    const index = findIndex(sheetMap, (obj: SheetMapping): boolean => {
       if (!obj.hasOwnProperty('name') || obj.name !== name) {
         return false;
       }
@@ -149,23 +123,16 @@ export function createStyleManager({ jss, theme = {} } = {}) {
 
   /**
    * Set DOM rendering order by sheet names.
-   *
-   * @memberOf module:styleManager~styleManager
-   * @param {Array} sheetNames - Sheet names sorted by rendering order
    */
-  function setSheetOrder(sheetNames) {
+  function setSheetOrder(sheetNames: Array<string>) {
     sheetOrder = sheetNames;
   }
 
   /**
    * Replace the current theme with a new theme
-   *
-   * @memberOf module:styleManager~styleManager
-   * @param  {Object}  newTheme      - New theme object
-   * @param  {boolean} shouldUpdate  - Set to true to update sheets immediately
    */
-  function updateTheme(newTheme, shouldUpdate = true) {
-    theme = newTheme;
+  function updateTheme(newTheme: Object, shouldUpdate: ?boolean = true) {
+    styleManager.theme = newTheme;
     if (shouldUpdate) {
       rerender();
     }
@@ -173,11 +140,9 @@ export function createStyleManager({ jss, theme = {} } = {}) {
 
   /**
    * Reset JSS registry, remove sheets and empty the styleManager.
-   *
-   * @memberOf module:styleManager~styleManager
    */
   function reset() {
-    sheetMap.forEach(({ jssStyleSheet }) => jssStyleSheet.detach());
+    sheetMap.forEach(({ jssStyleSheet }: SheetMapping) => { jssStyleSheet.detach(); });
     sheetMap = [];
   }
 
@@ -189,17 +154,13 @@ export function createStyleManager({ jss, theme = {} } = {}) {
   function rerender() {
     const sheets = [...sheetMap];
     reset();
-    sheets.forEach((n) => render(n.styleSheet));
+    sheets.forEach((n: SheetMapping) => { render(n.styleSheet); });
   }
 
   /**
    * Prepare inline styles using Theme Reactor
-   *
-   * @memberOf module:styleManager~styleManager
-   * @param  {Object|Function} declaration - Style object or callback function
-   * @return {Object}                      - Processed styles
    */
-  function prepareInline(declaration) {
+  function prepareInline(declaration: CSSStyleDeclaration|Function): CSSStyleDeclaration {
     if (typeof declaration === 'function') {
       declaration = declaration(theme);
     }
@@ -216,13 +177,10 @@ export function createStyleManager({ jss, theme = {} } = {}) {
 
   /**
    * Render sheets to an HTML string
-   *
-   * @memberOf module:styleManager~styleManager
-   * @return {string} - HTML string of style elements + css
    */
-  function sheetsToString() {
+  function sheetsToString(): string {
     return sheetMap
-      .sort((a, b) => {
+      .sort((a: SheetMapping, b: SheetMapping): number => {
         if (a.jssStyleSheet.options.index < b.jssStyleSheet.options.index) {
           return -1;
         }
@@ -231,7 +189,7 @@ export function createStyleManager({ jss, theme = {} } = {}) {
         }
         return 0;
       })
-      .map((sheet) => sheet.jssStyleSheet.toString())
+      .map((sheet: SheetMapping): string => sheet.jssStyleSheet.toString())
       .join('\n');
   }
 

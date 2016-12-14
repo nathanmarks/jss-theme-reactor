@@ -8,4 +8,6 @@ dependencies:
 
 test:
   override:
-    - npm run lint && npm run test:coverage && cat ./test/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+    - npm run lint 
+    - npm run flow
+    - npm run test:coverage && cat ./test/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js

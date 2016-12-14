@@ -1,11 +1,13 @@
+// @flow
+
 import { Component, PropTypes } from 'react';
 import { create } from 'jss';
 import jssPreset from 'jss-preset-default';
 import { createStyleManager } from './styleManager';
 
 export function createThemeProvider(
-  createDefaultTheme = () => ({}),
-  createJss = () => create(jssPreset())
+  createDefaultTheme: () => Object = (): Object => ({}),
+  createJss: () => Jss = (): Jss => create(jssPreset()),
 ) {
   class ThemeProvider extends Component {
     static propTypes = {
@@ -42,15 +44,18 @@ export function createThemeProvider(
       this.styleManager = styleManager;
     }
 
-    componentWillUpdate(nextProps) {
+    componentWillUpdate(nextProps: Object) {
       if (this.theme && nextProps.theme && nextProps.theme !== this.theme) {
         this.theme = nextProps.theme;
-        this.styleManager.updateTheme(nextProps.theme);
+
+        if (this.styleManager) {
+          this.styleManager.updateTheme(nextProps.theme);
+        }
       }
     }
 
-    theme = undefined;
-    styleManager = undefined;
+    theme: ?Object = undefined;
+    styleManager: ?StyleManager = undefined;
 
     render() {
       return this.props.children;
