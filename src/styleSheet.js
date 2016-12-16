@@ -19,10 +19,10 @@ export function createStyleSheet(
     }
 
     const overrides = theme.overrides[name];
-    const rulesWithOverrides = {};
+    const rulesWithOverrides = { ...rules };
 
-    Object.keys(rules).forEach((n) => {
-      rulesWithOverrides[n] = Object.assign({}, rules[n], overrides[n]);
+    Object.keys(overrides).forEach((n) => {
+      rulesWithOverrides[n] = Object.assign(rulesWithOverrides[n] || {}, overrides[n]);
     });
 
     return rulesWithOverrides;

@@ -89,5 +89,55 @@ describe('styleSheet.js', () => {
         );
       });
     });
+
+    describe('with additional rules', () => {
+      let styleSheet;
+
+      function createRules() {
+        return {
+          bar: {
+            color: 'red',
+            width: 100,
+          },
+        };
+      }
+
+      beforeEach(() => {
+        styleSheet = createStyleSheet('foo', () => createRules());
+      });
+
+      it('should return the rule with no overrides', () => {
+        assert.deepEqual(styleSheet.createRules(), createRules());
+      });
+
+      it('should return the rule with overrides and the additional rule', () => {
+        const overrides = {
+          foo: {
+            bar: {
+              color: 'blue',
+            },
+            '@keyframes': {
+              '0%': {
+                opacity: 1,
+              },
+            },
+          },
+        };
+
+        const expectedRules = createRules();
+
+        expectedRules.bar.color = 'blue';
+        expectedRules['@keyframes'] = {
+          '0%': {
+            opacity: 1,
+          },
+        };
+
+        assert.deepEqual(
+          styleSheet.createRules({ overrides }),
+          expectedRules
+        );
+      });
+    });
   });
 });
