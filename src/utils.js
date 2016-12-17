@@ -4,7 +4,7 @@
 export function transform(
   obj: Object,
   iteratee: ((accumulator: any, value: any, key: string) => void),
-  accumulator: any
+  accumulator: any,
 ) {
   Object.keys(obj).forEach((key) => {
     iteratee(accumulator, obj[key], key);

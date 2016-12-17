@@ -3,7 +3,7 @@
 export function createStyleSheet(
   name: string,
   callback: Object|((theme: Object) => Object),
-  options: Object = {}
+  options: Object = {},
 ): ThemeReactorStyleSheet {
   const styleSheet = {
     name,

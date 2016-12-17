@@ -85,7 +85,7 @@ describe('styleSheet.js', () => {
 
         assert.deepEqual(
           styleSheet.createRules({ overrides }),
-          expectedRules
+          expectedRules,
         );
       });
     });
@@ -135,7 +135,7 @@ describe('styleSheet.js', () => {
 
         assert.deepEqual(
           styleSheet.createRules({ overrides }),
-          expectedRules
+          expectedRules,
         );
       });
     });
