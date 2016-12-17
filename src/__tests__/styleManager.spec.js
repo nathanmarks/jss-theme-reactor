@@ -60,10 +60,10 @@ describe('styleManager.js', () => {
           {
             meta: 'foo',
             woof: 'meow',
-          }
+          },
         ),
         true,
-        'should pass the raw styles and options to jss'
+        'should pass the raw styles and options to jss',
       );
       assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jssStyleSheet.createStyleSheet()');
       assert.strictEqual(attach.callCount, 1, 'should call jssStyleSheet.attach()');
@@ -102,10 +102,10 @@ describe('styleManager.js', () => {
             {
               meta: 'foo',
               woof: 'meow',
-            }
+            },
           ),
           true,
-          'should pass the raw styles and options to jss'
+          'should pass the raw styles and options to jss',
         );
 
         assert.strictEqual(jss.removeStyleSheet.callCount, 1, 'should call jssStyleSheet.removeStyleSheet()');
@@ -179,10 +179,10 @@ describe('styleManager.js', () => {
           {
             meta: 'bar',
             index: 0,
-          }
+          },
         ),
         true,
-        'should pass the raw styles and the order index to jss'
+        'should pass the raw styles and the order index to jss',
       );
     });
 
@@ -194,10 +194,10 @@ describe('styleManager.js', () => {
             meta: 'foo',
             woof: 'meow',
             index: 2,
-          }
+          },
         ),
         true,
-        'should pass the raw styles and options with the order index to jss'
+        'should pass the raw styles and options with the order index to jss',
       );
     });
 
@@ -208,10 +208,10 @@ describe('styleManager.js', () => {
           {
             meta: 'woof',
             index: 999,
-          }
+          },
         ),
         true,
-        'should pass the raw styles and the custom order index to jss'
+        'should pass the raw styles and the custom order index to jss',
       );
     });
   });

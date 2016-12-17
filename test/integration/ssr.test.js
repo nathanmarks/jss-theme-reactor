@@ -46,7 +46,7 @@ describe('ssr', () => {
         .button-root-3645560457 {
           color: red;
         }
-      `
+      `,
     );
   });
 
@@ -66,7 +66,7 @@ describe('ssr', () => {
         .icon-root-1243194637 {
           color: blue;
         }
-      `
+      `,
     );
   });
 });

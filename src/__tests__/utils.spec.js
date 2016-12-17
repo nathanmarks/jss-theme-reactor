@@ -34,7 +34,7 @@ describe('utils.js', () => {
       assert.strictEqual(
         find(array, (n) => n && n.woof === 'meow'),
         array[3],
-        'should work for functions'
+        'should work for functions',
       );
     });
   });

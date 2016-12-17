@@ -41,27 +41,9 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
-    'react/jsx-handler-names': ['error', {
-      eventHandlerPrefix: 'handle',
-      eventHandlerPropPrefix: 'on',
-    }],
     'react/jsx-filename-extension': ['error', {extensions: ['.js']}],
-    'react/jsx-max-props-per-line': ['error', {maximum: 3}],
-    'react/jsx-no-duplicate-props': 'error',
     'react/forbid-prop-types': 'off',
     'react/no-unused-prop-types': 'off',
-    'react/sort-comp': [2, {
-      order: [
-        'static-methods',
-        'lifecycle',
-        // 'properties', // not real -- NEEDS A PR!!!
-        // '/^handle.+$/', // wishlist -- needs above first
-        // '/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/', // wishlist -- needs above first
-        'everything-else',
-        '/^render.+$/',
-        'render'
-      ],
-    }],
     'mocha/handle-done-callback': 'error',
     'mocha/no-exclusive-tests': 'error',
     'mocha/no-global-tests': 'error',

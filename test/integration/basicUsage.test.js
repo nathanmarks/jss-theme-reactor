@@ -57,7 +57,7 @@ describe('basic usage', () => {
       assert.strictEqual(
         styleElement.getAttribute('data-meta'),
         'button',
-        'should have the stylesheet name as the data-meta attribute'
+        'should have the stylesheet name as the data-meta attribute',
       );
 
       const { style } = styleElement.sheet.cssRules[0];
@@ -73,19 +73,19 @@ describe('basic usage', () => {
       assert.strictEqual(
         typeof classes.root,
         'string',
-        'should return a className on the root key'
+        'should return a className on the root key',
       );
 
       assert.strictEqual(
         classes.root.indexOf('button-'),
         0,
-        'should prefix the selector with the sheet name'
+        'should prefix the selector with the sheet name',
       );
 
       assert.strictEqual(
         `.${classes.root}`,
         selectorText,
-        'should match the selectorText'
+        'should match the selectorText',
       );
     });
   });

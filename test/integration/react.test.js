@@ -43,7 +43,7 @@ describe('react component integration', () => {
       assert.strictEqual(
         styleElement.getAttribute('data-meta'),
         'button',
-        'should have the stylesheet name as the data-meta attribute'
+        'should have the stylesheet name as the data-meta attribute',
       );
 
       const { style, selectorText } = styleElement.sheet.cssRules[0];
@@ -54,7 +54,7 @@ describe('react component integration', () => {
 
       assert.strictEqual(
         wrapper.find('button').prop('className'),
-        selectorText.replace('.', '')
+        selectorText.replace('.', ''),
       );
     });
   });

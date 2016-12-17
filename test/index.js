@@ -32,5 +32,5 @@ glob(
         process.exit(failures);
       });
     });
-  }
+  },
 );
