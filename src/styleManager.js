@@ -1,5 +1,4 @@
 // @flow
-
 import jssVendorPrefixer from 'jss-vendor-prefixer';
 import type { Rule } from 'jss/lib/types';
 import createHash from 'murmurhash-js/murmurhash3_gc';
@@ -82,6 +81,13 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
    */
   function renderNew(styleSheet: ThemeReactorStyleSheet): Object {
     const { name, createRules, options } = styleSheet;
+
+    if (typeof window === 'object' && typeof document === 'object') {
+      const element = document.querySelector(`style[data-jss][data-meta="${name}"]`);
+      if (element) {
+        options.element = element;
+      }
+    }
 
     const rules = createRules(styleManager.theme);
     const jssOptions = {

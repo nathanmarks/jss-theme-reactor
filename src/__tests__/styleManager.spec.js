@@ -84,7 +84,7 @@ describe('styleManager.js', () => {
       assert.strictEqual(styleManager.sheetMap.length, 0, 'should empty the sheetmap');
     });
 
-    describe('webpack 1.x hmr support (new styleSheet Object reference)', () => {
+    describe('new styleSheet Object reference', () => {
       it('should replace the stylesheet', () => {
         const styleSheet1Reloaded = createStyleSheet('foo', () => ({
           base: {
