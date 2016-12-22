@@ -42,7 +42,7 @@ describe('react component integration', () => {
 
       assert.strictEqual(
         styleElement.getAttribute('data-meta'),
-        'button',
+        `button-${theme.id}`,
         'should have the stylesheet name as the data-meta attribute',
       );
 

@@ -8,8 +8,10 @@ describe('styleManager.js', () => {
   let jss;
   let attach;
   let detach;
+  let theme;
 
   beforeEach(() => {
+    theme = { color: 'red' };
     attach = stub().returns({ classes: { base: 'base-1234' } });
     detach = spy();
     jss = {
@@ -19,7 +21,7 @@ describe('styleManager.js', () => {
       createStyleSheet: stub().returns({ attach, detach }),
       removeStyleSheet: spy(),
     };
-    styleManager = createStyleManager({ jss, theme: { color: 'red' } });
+    styleManager = createStyleManager({ jss, theme });
   });
 
   it('should throw if no jss instance is passed', () => {
@@ -54,17 +56,9 @@ describe('styleManager.js', () => {
 
     it('should render a sheet using the renderer and return the classes', () => {
       assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jss.createStyleSheet()');
-      assert.strictEqual(
-        jss.createStyleSheet.calledWith(
-          styleSheet1.createRules(),
-          {
-            meta: 'foo',
-            woof: 'meow',
-          },
-        ),
-        true,
-        'should pass the raw styles and options to jss',
-      );
+      assert.deepEqual(jss.createStyleSheet.args[0][0], styleSheet1.createRules());
+      assert.strictEqual(jss.createStyleSheet.args[0][1].meta, `foo-${theme.id}`);
+      assert.strictEqual(jss.createStyleSheet.args[0][1].woof, 'meow');
       assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jssStyleSheet.createStyleSheet()');
       assert.strictEqual(attach.callCount, 1, 'should call jssStyleSheet.attach()');
       assert.strictEqual(styleManager.sheetMap.length, 1, 'should add a sheetMap item');
@@ -96,17 +90,9 @@ describe('styleManager.js', () => {
 
         styleManager.render(styleSheet1Reloaded);
 
-        assert.strictEqual(
-          jss.createStyleSheet.calledWith(
-            styleSheet1Reloaded.createRules(),
-            {
-              meta: 'foo',
-              woof: 'meow',
-            },
-          ),
-          true,
-          'should pass the raw styles and options to jss',
-        );
+        assert.deepEqual(jss.createStyleSheet.args[0][0], styleSheet1Reloaded.createRules());
+        assert.strictEqual(jss.createStyleSheet.args[0][1].meta, `foo-${theme.id}`);
+        assert.strictEqual(jss.createStyleSheet.args[0][1].woof, 'meow');
 
         assert.strictEqual(jss.removeStyleSheet.callCount, 1, 'should call jssStyleSheet.removeStyleSheet()');
         assert.strictEqual(jss.createStyleSheet.callCount, 1, 'should call jssStyleSheet.createStyleSheet()');
@@ -173,46 +159,21 @@ describe('styleManager.js', () => {
     });
 
     it('should render a sheet using the renderer and pass the order index', () => {
-      assert.strictEqual(
-        jss.createStyleSheet.calledWith(
-          bar.createRules(),
-          {
-            meta: 'bar',
-            index: 0,
-          },
-        ),
-        true,
-        'should pass the raw styles and the order index to jss',
-      );
+      assert.deepEqual(jss.createStyleSheet.args[1][0], bar.createRules());
+      assert.strictEqual(jss.createStyleSheet.args[1][1].meta, `bar-${theme.id}`);
+      assert.strictEqual(jss.createStyleSheet.args[1][1].index, 0);
     });
 
     it('should render a sheet and merge options with the index', () => {
-      assert.strictEqual(
-        jss.createStyleSheet.calledWith(
-          foo.createRules(),
-          {
-            meta: 'foo',
-            woof: 'meow',
-            index: 2,
-          },
-        ),
-        true,
-        'should pass the raw styles and options with the order index to jss',
-      );
+      assert.deepEqual(jss.createStyleSheet.args[0][0], foo.createRules());
+      assert.strictEqual(jss.createStyleSheet.args[0][1].meta, `foo-${theme.id}`);
+      assert.strictEqual(jss.createStyleSheet.args[0][1].index, 2);
     });
 
     it('should override the order index', () => {
-      assert.strictEqual(
-        jss.createStyleSheet.calledWith(
-          woof.createRules(),
-          {
-            meta: 'woof',
-            index: 999,
-          },
-        ),
-        true,
-        'should pass the raw styles and the custom order index to jss',
-      );
+      assert.deepEqual(jss.createStyleSheet.args[2][0], woof.createRules());
+      assert.strictEqual(jss.createStyleSheet.args[2][1].meta, `woof-${theme.id}`);
+      assert.strictEqual(jss.createStyleSheet.args[2][1].index, 999);
     });
   });
 
@@ -225,9 +186,9 @@ describe('styleManager.js', () => {
     });
 
     it('should prepare inline styles with theme variables', () => {
-      const styles = styleManager.prepareInline((theme) => ({
+      const styles = styleManager.prepareInline((thm) => ({
         display: 'block',
-        color: theme.color,
+        color: thm.color,
       }));
       assert.deepEqual(styles, { display: 'block', color: 'red' }, 'should return themed styles');
     });

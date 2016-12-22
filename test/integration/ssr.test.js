@@ -81,7 +81,7 @@ describe('ssr', () => {
     function createStyleNode(name) {
       const element = document.createElement('style');
       element.setAttribute('data-jss', '');
-      element.setAttribute('data-meta', name);
+      element.setAttribute('data-meta', `${name}-${styleManager.theme.id}`);
       return element;
     }
 
@@ -105,11 +105,11 @@ describe('ssr', () => {
 
     it('should re-use the existing style node', () => {
       styleManager.render(styleSheet);
+      assert.strictEqual(document.head.querySelectorAll('style').length, 4);
       assert.strictEqual(
         styleManager.sheetMap[0].jssStyleSheet.options.element,
         styleNode,
       );
-      assert.strictEqual(document.head.querySelectorAll('style').length, 4);
     });
   });
 });

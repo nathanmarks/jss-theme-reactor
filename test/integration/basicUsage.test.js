@@ -56,7 +56,7 @@ describe('basic usage', () => {
 
       assert.strictEqual(
         styleElement.getAttribute('data-meta'),
-        'button',
+        `button-${themeObj.id}`,
         'should have the stylesheet name as the data-meta attribute',
       );
 

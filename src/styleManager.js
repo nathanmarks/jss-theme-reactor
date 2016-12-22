@@ -1,6 +1,5 @@
 // @flow
 import jssVendorPrefixer from 'jss-vendor-prefixer';
-import type { Rule } from 'jss/lib/types';
 import createHash from 'murmurhash-js/murmurhash3_gc';
 import { find, findIndex } from './utils';
 
@@ -20,13 +19,13 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
   // Register custom jss generateClassName function
   jss.options.generateClassName = generateClassName;
 
-  function generateClassName(str: string, rule: Rule): string {
+  function generateClassName(str: string, rule: Object): string {
     const hash = createHash(str);
     str = rule.name ? `${rule.name}-${hash}` : hash;
 
     // Simplify after next release with new method signature
-    if (rule.options.sheet && rule.options.sheet.options.meta) {
-      return `${rule.options.sheet.options.meta}-${str}`;
+    if (rule.options.sheet && rule.options.sheet.options.name) {
+      return `${rule.options.sheet.options.name}-${str}`;
     }
     return str;
   }
@@ -48,6 +47,8 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
     prepareInline,
     sheetsToString,
   };
+
+  updateTheme(theme, false);
 
   function render(styleSheet: ThemeReactorStyleSheet): Object {
     const index = getMappingIndex(styleSheet.name);
@@ -81,9 +82,10 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
    */
   function renderNew(styleSheet: ThemeReactorStyleSheet): Object {
     const { name, createRules, options } = styleSheet;
+    const sheetMeta = `${name}-${styleManager.theme.id}`;
 
     if (typeof window === 'object' && typeof document === 'object') {
-      const element = document.querySelector(`style[data-jss][data-meta="${name}"]`);
+      const element = document.querySelector(`style[data-jss][data-meta="${sheetMeta}"]`);
       if (element) {
         options.element = element;
       }
@@ -91,7 +93,8 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
 
     const rules = createRules(styleManager.theme);
     const jssOptions = {
-      meta: name,
+      name,
+      meta: sheetMeta,
       ...options,
     };
 
@@ -139,6 +142,9 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
    */
   function updateTheme(newTheme: Object, shouldUpdate: ?boolean = true) {
     styleManager.theme = newTheme;
+    if (!styleManager.theme.id) {
+      styleManager.theme.id = createHash(JSON.stringify(styleManager.theme));
+    }
     if (shouldUpdate) {
       rerender();
     }
