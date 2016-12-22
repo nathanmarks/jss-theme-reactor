@@ -1,72 +1,115 @@
 /* eslint-env mocha */
 import { assert } from 'chai';
 import { create as createJss } from 'jss';
-import VirtualRenderer from 'jss/lib/backends/VirtualRenderer';
 import preset from 'jss-preset-default';
 import { stripIndent } from 'common-tags';
 import { createStyleManager, createStyleSheet } from 'src';
+import createDOM from 'test/dom';
 
 describe('ssr', () => {
-  let styleManager;
-  let buttonSheet;
-  let iconSheet;
+  describe('rendering to a string', () => {
+    let styleManager;
+    let buttonSheet;
+    let iconSheet;
 
-  beforeEach(() => {
-    styleManager = createStyleManager({
-      jss: createJss(preset()),
+    beforeEach(() => {
+      styleManager = createStyleManager({
+        jss: createJss(preset()),
+      });
+
+      buttonSheet = createStyleSheet('button', {
+        root: {
+          color: 'red',
+        },
+      });
+
+      iconSheet = createStyleSheet('icon', {
+        root: {
+          color: 'blue',
+        },
+      });
     });
 
-    buttonSheet = createStyleSheet('button', {
-      root: {
-        color: 'red',
-      },
-    }, { Renderer: VirtualRenderer });
+    it('should render the sheets to a string in order', () => {
+      styleManager.setSheetOrder(['icon', 'button']);
 
-    iconSheet = createStyleSheet('icon', {
-      root: {
-        color: 'blue',
-      },
-    }, { Renderer: VirtualRenderer });
+      styleManager.render(buttonSheet);
+      styleManager.render(iconSheet);
+
+      const styles = styleManager.sheetsToString();
+
+      assert.strictEqual(
+        styles,
+        stripIndent`
+          .icon-root-1243194637 {
+            color: blue;
+          }
+          .button-root-3645560457 {
+            color: red;
+          }
+        `,
+      );
+    });
+
+    it('should render the sheets to a string in a different order', () => {
+      styleManager.setSheetOrder(['button', 'icon']);
+
+      styleManager.render(buttonSheet);
+      styleManager.render(iconSheet);
+
+      const styles = styleManager.sheetsToString();
+      assert.strictEqual(
+        styles,
+        stripIndent`
+          .button-root-3645560457 {
+            color: red;
+          }
+          .icon-root-1243194637 {
+            color: blue;
+          }
+        `,
+      );
+    });
   });
 
-  it('should render the sheets to a string in order', () => {
-    styleManager.setSheetOrder(['icon', 'button']);
+  describe('taking over existing style nodes on the client', () => {
+    let dom;
+    let styleNode;
+    let styleSheet;
+    let styleManager;
 
-    styleManager.render(buttonSheet);
-    styleManager.render(iconSheet);
+    function createStyleNode(name) {
+      const element = document.createElement('style');
+      element.setAttribute('data-jss', '');
+      element.setAttribute('data-meta', `${name}-${styleManager.theme.id}`);
+      return element;
+    }
 
-    const styles = styleManager.sheetsToString();
+    beforeEach(() => {
+      dom = createDOM();
+      styleManager = createStyleManager({
+        jss: createJss(preset()),
+      });
+      styleSheet = createStyleSheet('foo', { woof: { color: 'red' } });
 
-    assert.strictEqual(
-      styles,
-      stripIndent`
-        .icon-root-1243194637 {
-          color: blue;
-        }
-        .button-root-3645560457 {
-          color: red;
-        }
-      `,
-    );
-  });
+      document.head.appendChild(createStyleNode('fizz'));
+      styleNode = createStyleNode('foo');
+      document.head.appendChild(styleNode);
+      document.head.appendChild(createStyleNode('bar'));
+      document.head.appendChild(createStyleNode('buzz'));
+    });
 
-  it('should render the sheets to a string in a different order', () => {
-    styleManager.setSheetOrder(['button', 'icon']);
+    afterEach(() => {
+      dom.destroy();
+    });
 
-    styleManager.render(buttonSheet);
-    styleManager.render(iconSheet);
-
-    const styles = styleManager.sheetsToString();
-    assert.strictEqual(
-      styles,
-      stripIndent`
-        .button-root-3645560457 {
-          color: red;
-        }
-        .icon-root-1243194637 {
-          color: blue;
-        }
-      `,
-    );
+    it('should re-use the existing style node', () => {
+      styleManager.render(styleSheet);
+      assert.strictEqual(document.head.querySelectorAll('style').length, 4);
+      assert.strictEqual(
+        styleManager.sheetMap[0].jssStyleSheet.options.element,
+        styleNode,
+      );
+    });
   });
 });
