@@ -32,7 +32,7 @@
     "url": "https://github.com/nathanmarks/jss-theme-reactor/issues"
   },
   "dependencies": {
-    "jss": "^6.0.1",
+    "jss": "6.2.0",
     "jss-preset-default": "^1.1.0",
     "jss-vendor-prefixer": "^4.0.0",
     "murmurhash-js": "^1.0.0"
