@@ -72,7 +72,7 @@
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
     "react-dom": "^15.3.2",
-    "rimraf": "^2.5.4",
+    "rimraf": "^2.6.0",
     "sinon": "^1.17.6",
     "webpack": "^2.1.0-beta.13"
   }
