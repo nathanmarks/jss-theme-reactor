@@ -10,7 +10,7 @@
     "flow": "flow --show-all-errors",
     "lint": "eslint src test/integration && echo \"eslint: no lint errors\"",
     "test": "cross-env NODE_ENV=test mocha",
-    "test:coverage": "cross-env NODE_ENV=test ./node_modules/istanbul/lib/cli.js cover mocha",
+    "test:coverage": "cross-env NODE_ENV=test BABEL_ENV=coverage nyc mocha && nyc report -r lcovonly",
     "test:watch": "cross-env NODE_ENV=test mocha -w"
   },
   "author": "Nathan Marks <info@nathanmarks.io> (http://nathanmarks.io)",
@@ -42,7 +42,7 @@
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.7",
-    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-plugin-istanbul": "^4.0.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-1": "^6.16.0",
@@ -50,7 +50,6 @@
     "benchmark": "^2.1.2",
     "chai": "^3.5.0",
     "common-tags": "^1.4.0",
-    "coveralls": "^2.11.14",
     "cross-env": "^3.1.3",
     "enzyme": "^2.5.1",
     "eslint": "^3.9.1",
@@ -63,14 +62,24 @@
     "eslint-plugin-react": "^6.6.0",
     "flow-bin": "^0.37.0",
     "fs-extra": "^1.0.0",
-    "istanbul": "^1.0.0-alpha.2",
     "jsdom": "^9.8.3",
     "mocha": "^3.1.2",
+    "nyc": "^10.1.2",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
     "react-dom": "^15.3.2",
     "rimraf": "^2.5.4",
     "sinon": "^1.17.6",
     "webpack": "^2.1.0-beta.13"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/*.spec.js"
+    ],
+    "sourceMap": false,
+    "instrument": false
   }
 }

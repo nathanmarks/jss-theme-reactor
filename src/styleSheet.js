@@ -5,7 +5,9 @@ export function createStyleSheet(
   callback: Object|((theme: Object) => Object),
   options: Object = {},
 ): ThemeReactorStyleSheet {
-  if (!options.insertionPoint) options.insertionPoint = 'jss-theme-reactor';
+  if (!options.insertionPoint) {
+    options.insertionPoint = 'jss-theme-reactor';
+  }
 
   const styleSheet = {
     name,

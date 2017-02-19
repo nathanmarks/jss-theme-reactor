@@ -8,3 +8,4 @@ coverage
 # OS files
 .DS_STORE
 .vscode
+.nyc_output
