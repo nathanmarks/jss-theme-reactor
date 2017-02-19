@@ -2,7 +2,7 @@
   "name": "jss-theme-reactor-build",
   "description": "Powerful theming layer for use with the JSS library (CSS in JS)",
   "private": true,
-  "version": "0.9.0",
+  "version": "0.10.0",
   "scripts": {
     "build": "babel src --ignore *.spec.js --out-dir build && babel-node scripts/copy-files.js",
     "build-publish": "npm run build && cd build && npm publish && cd .. && npm run clean",
