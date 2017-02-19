@@ -3,18 +3,15 @@ import { assert } from 'chai';
 import { create as createJss } from 'jss';
 import DomRenderer from 'jss/lib/backends/DomRenderer';
 import preset from 'jss-preset-default';
-import createDOM from 'test/dom';
 import { createStyleManager, createStyleSheet } from 'src';
 
 describe('basic usage', () => {
-  let dom;
   let themeObj;
   let styleManager;
   let styleSheet;
   let classes;
 
   before(() => {
-    dom = createDOM();
     themeObj = {
       fontFamily: 'Roboto',
       fontSize: 12,
@@ -33,8 +30,8 @@ describe('basic usage', () => {
     }), { Renderer: DomRenderer });
   });
 
-  after(() => {
-    dom.destroy();
+  afterEach(() => {
+    styleManager.reset();
   });
 
   it('should start with no stylesheets in the DOM', () => {

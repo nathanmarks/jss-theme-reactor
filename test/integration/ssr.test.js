@@ -4,7 +4,6 @@ import { create as createJss } from 'jss';
 import preset from 'jss-preset-default';
 import { stripIndent } from 'common-tags';
 import { createStyleManager, createStyleSheet } from 'src';
-import createDOM from 'test/dom';
 
 describe('ssr', () => {
   describe('rendering to a string', () => {
@@ -28,6 +27,10 @@ describe('ssr', () => {
           color: 'blue',
         },
       });
+    });
+
+    afterEach(() => {
+      styleManager.reset();
     });
 
     it('should render the sheets to a string in order', () => {
@@ -73,7 +76,6 @@ describe('ssr', () => {
   });
 
   describe('taking over existing style nodes on the client', () => {
-    let dom;
     let styleNode;
     let styleSheet;
     let styleManager;
@@ -86,7 +88,6 @@ describe('ssr', () => {
     }
 
     beforeEach(() => {
-      dom = createDOM();
       styleManager = createStyleManager({
         jss: createJss(preset()),
       });
@@ -100,7 +101,8 @@ describe('ssr', () => {
     });
 
     afterEach(() => {
-      dom.destroy();
+      styleManager.reset();
+      document.head.innerHTML = '';
     });
 
     it('should re-use the existing style node', () => {

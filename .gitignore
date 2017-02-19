@@ -7,3 +7,4 @@ coverage
 
 # OS files
 .DS_STORE
+.vscode

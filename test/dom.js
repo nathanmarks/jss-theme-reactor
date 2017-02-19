@@ -2,7 +2,7 @@ const { jsdom } = require('jsdom');
 
 const exposedProperties = ['window', 'navigator', 'document'];
 
-module.exports = createDOM;
+module.exports = createDOM();
 
 function createDOM() {
   const domDocument = jsdom('');
@@ -23,10 +23,5 @@ function createDOM() {
 
   return {
     domDocument,
-    destroy() {
-      exposedProperties.forEach((n) => {
-        delete global[n];
-      });
-    },
   };
 }

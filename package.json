@@ -9,9 +9,9 @@
     "clean": "rimraf build",
     "flow": "flow --show-all-errors",
     "lint": "eslint src test/integration && echo \"eslint: no lint errors\"",
-    "test": "cross-env NODE_ENV=test babel-node test/index.js",
-    "test:coverage": "cross-env NODE_ENV=test babel-node ./node_modules/istanbul/lib/cli.js cover test/index.js",
-    "test:watch": "cross-env NODE_ENV=test babel-node test/watch.js"
+    "test": "cross-env NODE_ENV=test mocha",
+    "test:coverage": "cross-env NODE_ENV=test ./node_modules/istanbul/lib/cli.js cover mocha",
+    "test:watch": "cross-env NODE_ENV=test mocha -w"
   },
   "author": "Nathan Marks <info@nathanmarks.io> (http://nathanmarks.io)",
   "keywords": [
@@ -63,12 +63,9 @@
     "eslint-plugin-react": "^6.6.0",
     "flow-bin": "^0.37.0",
     "fs-extra": "^1.0.0",
-    "glob": "^7.1.1",
     "istanbul": "^1.0.0-alpha.2",
     "jsdom": "^9.8.3",
-    "minimist": "^1.2.0",
     "mocha": "^3.1.2",
-    "nodemon": "^1.11.0",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
     "react-dom": "^15.3.2",

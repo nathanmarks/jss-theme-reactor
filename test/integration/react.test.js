@@ -3,15 +3,12 @@ import React from 'react';
 import { assert } from 'chai';
 import { mount } from 'enzyme';
 import Button from 'test/fixtures/Button';
-import createDOM from 'test/dom';
 import ThemeProvider from 'src/ThemeProvider';
 
 describe('react component integration', () => {
-  let dom;
   let theme;
 
   beforeEach(() => {
-    dom = createDOM();
     theme = {
       typography: {
         fontFamily: 'Roboto',
@@ -21,10 +18,6 @@ describe('react component integration', () => {
         primary: 'red',
       },
     };
-  });
-
-  afterEach(() => {
-    dom.destroy();
   });
 
   describe('with a simple button', () => {
@@ -56,6 +49,8 @@ describe('react component integration', () => {
         wrapper.find('button').prop('className'),
         selectorText.replace('.', ''),
       );
+
+      wrapper.instance().styleManager.reset();
     });
   });
 });
