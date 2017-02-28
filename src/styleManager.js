@@ -19,8 +19,9 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
   // Register custom jss generateClassName function
   jss.options.generateClassName = generateClassName;
 
+  
   function generateClassName(str: string, rule: Object): string {
-    const hash = createHash(str);
+    const hash = createHash(theme.id);
     str = rule.name ? `${rule.name}-${hash}` : hash;
 
     // Simplify after next release with new method signature
