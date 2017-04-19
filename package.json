@@ -34,7 +34,8 @@
   "dependencies": {
     "jss": "^7.0.3",
     "jss-preset-default": "^2.0.0",
-    "jss-vendor-prefixer": "^5.1.0"
+    "jss-vendor-prefixer": "^5.1.0",
+    "murmurhash-js": "^1.0.0"
   },
   "devDependencies": {
     "app-module-path": "^2.1.0",
