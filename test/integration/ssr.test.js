@@ -44,10 +44,10 @@ describe('ssr', () => {
       assert.strictEqual(
         styles,
         stripIndent`
-          .icon-root-1243194637 {
+          .icon-root-tr-2 {
             color: blue;
           }
-          .button-root-3645560457 {
+          .button-root-tr-1 {
             color: red;
           }
         `,
@@ -64,10 +64,10 @@ describe('ssr', () => {
       assert.strictEqual(
         styles,
         stripIndent`
-          .button-root-3645560457 {
+          .button-root-tr-1 {
             color: red;
           }
-          .icon-root-1243194637 {
+          .icon-root-tr-2 {
             color: blue;
           }
         `,
