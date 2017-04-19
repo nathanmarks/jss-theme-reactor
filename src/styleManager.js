@@ -3,7 +3,7 @@ import jssVendorPrefixer from 'jss-vendor-prefixer';
 import createHash from 'murmurhash-js/murmurhash3_gc';
 import { find, findIndex } from './utils';
 
-const prefixRule = jssVendorPrefixer();
+const { onProcessStyle } = jssVendorPrefixer();
 
 /**
  * Creates a new styleManager
@@ -19,13 +19,17 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
   // Register custom jss generateClassName function
   jss.options.generateClassName = generateClassName;
 
-  function generateClassName(str: string, rule: Object): string {
-    const hash = createHash(str);
-    str = rule.name ? `${rule.name}-${hash}` : hash;
+  let ruleCounter: number = 0;
+
+  function generateClassName(rule: Object, sheet: Object): string {
+    let str: string = '';
+
+    ruleCounter += 1;
+    str = rule.name ? `${rule.name}-tr-${ruleCounter}` : `tr-${ruleCounter}`;
 
     // Simplify after next release with new method signature
-    if (rule.options.sheet && rule.options.sheet.options.name) {
-      return `${rule.options.sheet.options.name}-${str}`;
+    if (sheet && sheet.options.name) {
+      return `${sheet.options.name}-${str}`;
     }
     return str;
   }
@@ -182,7 +186,7 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
       style: declaration,
     };
 
-    prefixRule(rule);
+    onProcessStyle(rule.style, rule);
 
     return rule.style;
   }
