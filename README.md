@@ -11,8 +11,6 @@ $ npm install jss-theme-reactor --save
 ## Usage
 
 - [Basic example](#basic-example)
-- [React integration](#react-integration)
-- [Server-side rendering](#server-side-rendering)
 
 ### Basic example
 
@@ -44,14 +42,14 @@ styleSheet = createStyleSheet('button', (theme) => ({
 
 const classes = styleManager.render(styleSheet);
 
-// classes.root === '.button-root-1l7rpve'
+// classes.root === '.button-root-tr-1'
 ```
 
 Resulting document head:
 
 ```html
 <style type="text/css" data-jss="" data-meta="button">
-.button-root-1l7rpve {
+.button-root-tr-1 {
   color: red;
   font-size: 12px;
   font-family: Roboto;
