@@ -5,9 +5,29 @@ import { create } from 'jss';
 import jssPreset from 'jss-preset-default';
 import { createStyleManager } from './styleManager';
 
+const createGenerateClassName = () => {
+  let ruleCounter: number = 0;
+  return function generateClassName(rule: Object, sheet: Object): string {
+    let str: string = '';
+
+    ruleCounter += 1;
+    str = rule.key ? `${rule.key}-tr-${ruleCounter}` : `tr-${ruleCounter}`;
+
+    // Simplify after next release with new method signature
+    if (sheet && sheet.options.name) {
+      return `${sheet.options.name}-${str}`;
+    }
+    return str;
+  };
+};
+
+export const defaultJssOptions = Object.assign({}, jssPreset(), {
+  createGenerateClassName,
+});
+
 export function createThemeProvider(
   createDefaultTheme: () => Object = (): Object => ({}),
-  createJss: () => Jss = (): Jss => create(jssPreset()),
+  createJss: () => Jss = (): Jss => create(defaultJssOptions)
 ) {
   class ThemeProvider extends Component {
     static propTypes = {
