@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import { assert } from 'chai';
 import { create as createJss } from 'jss';
-import DomRenderer from 'jss/lib/backends/DomRenderer';
+import DomRenderer from 'jss/lib/renderers/DomRenderer';
 import preset from 'jss-preset-default';
 import { createStyleManager, createStyleSheet } from 'src';
 
