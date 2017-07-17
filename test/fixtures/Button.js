@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import DomRenderer from 'jss/lib/backends/DomRenderer';
+import DomRenderer from 'jss/lib/renderers/DomRenderer';
 import { createStyleSheet } from 'src';
 
 const styleSheet = createStyleSheet('button', (theme) => ({
