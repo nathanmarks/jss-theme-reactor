@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import { create as createJss } from 'jss';
 import DomRenderer from 'jss/lib/renderers/DomRenderer';
 import { createStyleManager, createStyleSheet } from 'src';
-import { defaultJssOptions } from '../../src/ThemeProvider'
+import { defaultJssOptions } from '../../src/ThemeProvider';
 
 describe('basic usage', () => {
   let themeObj;

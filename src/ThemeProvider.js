@@ -27,7 +27,7 @@ export const defaultJssOptions = Object.assign({}, jssPreset(), {
 
 export function createThemeProvider(
   createDefaultTheme: () => Object = (): Object => ({}),
-  createJss: () => Jss = (): Jss => create(defaultJssOptions)
+  createJss: () => Jss = (): Jss => create(defaultJssOptions),
 ) {
   class ThemeProvider extends Component {
     static propTypes = {
