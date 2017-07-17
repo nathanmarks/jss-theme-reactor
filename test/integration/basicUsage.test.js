@@ -2,8 +2,8 @@
 import { assert } from 'chai';
 import { create as createJss } from 'jss';
 import DomRenderer from 'jss/lib/renderers/DomRenderer';
-import preset from 'jss-preset-default';
 import { createStyleManager, createStyleSheet } from 'src';
+import { defaultJssOptions } from '../../src/ThemeProvider'
 
 describe('basic usage', () => {
   let themeObj;
@@ -18,7 +18,7 @@ describe('basic usage', () => {
       color: 'red',
     };
     styleManager = createStyleManager({
-      jss: createJss(preset()),
+      jss: createJss(defaultJssOptions),
       theme: themeObj,
     });
     styleSheet = createStyleSheet('button', (theme) => ({
