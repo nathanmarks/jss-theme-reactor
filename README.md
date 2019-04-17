@@ -1,5 +1,7 @@
 # jss-theme-reactor [![Build Status](https://img.shields.io/circleci/project/nathanmarks/jss-theme-reactor/master.svg?style=flat-square)](https://circleci.com/gh/nathanmarks/jss-theme-reactor) [![codecov](https://codecov.io/gh/nathanmarks/jss-theme-reactor/branch/master/graph/badge.svg)](https://codecov.io/gh/nathanmarks/jss-theme-reactor) [![npm](https://img.shields.io/npm/v/jss-theme-reactor.svg?style=flat-square)](https://www.npmjs.com/package/jss-theme-reactor)
 
+## NOT MAINTAINED!
+
 ## Installation
 
 Install `jss-theme-reactor`.
