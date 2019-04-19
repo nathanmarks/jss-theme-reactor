@@ -1,9 +1,9 @@
 /* eslint-env mocha */
 import { assert } from 'chai';
 import { create as createJss } from 'jss';
-import preset from 'jss-preset-default';
 import { stripIndent } from 'common-tags';
 import { createStyleManager, createStyleSheet } from 'src';
+import { defaultJssOptions } from '../../src/ThemeProvider';
 
 describe('ssr', () => {
   describe('rendering to a string', () => {
@@ -13,7 +13,7 @@ describe('ssr', () => {
 
     beforeEach(() => {
       styleManager = createStyleManager({
-        jss: createJss(preset()),
+        jss: createJss(defaultJssOptions),
       });
 
       buttonSheet = createStyleSheet('button', {
@@ -89,7 +89,7 @@ describe('ssr', () => {
 
     beforeEach(() => {
       styleManager = createStyleManager({
-        jss: createJss(preset()),
+        jss: createJss(defaultJssOptions),
       });
       styleSheet = createStyleSheet('foo', { woof: { color: 'red' } });
 

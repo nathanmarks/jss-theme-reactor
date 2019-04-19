@@ -16,24 +16,6 @@ export function createStyleManager({ jss, theme = {} }: StyleManagerOptions = {}
   let sheetMap: Array<SheetMapping> = [];
   let sheetOrder: Array<string>;
 
-  // Register custom jss generateClassName function
-  jss.options.generateClassName = generateClassName;
-
-  let ruleCounter: number = 0;
-
-  function generateClassName(rule: Object, sheet: Object): string {
-    let str: string = '';
-
-    ruleCounter += 1;
-    str = rule.name ? `${rule.name}-tr-${ruleCounter}` : `tr-${ruleCounter}`;
-
-    // Simplify after next release with new method signature
-    if (sheet && sheet.options.name) {
-      return `${sheet.options.name}-${str}`;
-    }
-    return str;
-  }
-
   /**
    * styleManager
    */
